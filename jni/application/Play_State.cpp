@@ -19,12 +19,15 @@ Play_State::Controls::Controls()
 {}
 
 Play_State::Play_State()
-: crate(Point3f(12.0f, 12.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)),
-  player(Camera(Point3f(0.0f, 0.0f, 50.0f), Quaternion(), 1.0f, 10000.0f),
+: player(Camera(Point3f(0.0f, 0.0f, 50.0f), Quaternion(), 1.0f, 10000.0f),
          Vector3f(0.0f, 0.0f, -39.0f),
          11.0f)
 {
   set_pausable(true);
+  
+  /** Add terrain objects to the world **/
+  crates.push_back(new Crate(Point3f(12.0f, 12.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)));
+  crates.push_back(new Crate(Point3f(48.0f, 48.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)));
 }
 
 void Play_State::on_push() {
@@ -78,16 +81,16 @@ void Play_State::perform_logic() {
   
   /** Get velocity vector split into a number of axes **/
   const Vector3f velocity = (controls.forward - controls.back) * 50.0f * forward
-  + (controls.left - controls.right) * 50.0f * left;
+    + (controls.left - controls.right) * 50.0f * left;
   const Vector3f x_vel = velocity.get_i();
   const Vector3f y_vel = velocity.get_j();
   Vector3f z_vel = player.get_velocity().get_k();
   
   /** Bookkeeping for sound effects **/
-  if(velocity.magnitude() != 0.0f) moved = true;
+  if (velocity.magnitude() != 0.0f) moved = true;
   
   /** Keep delays under control (if the program hangs for some time, we don't want to lose responsiveness) **/
-  if(processing_time > 0.1f) processing_time = 0.1f;
+  if (processing_time > 0.1f) processing_time = 0.1f;
   
   /** Physics processing loop**/
   for (float time_step = 0.05f;
@@ -116,7 +119,7 @@ void Play_State::perform_logic() {
 void Play_State::render() {
   Video &vr = get_Video();
   vr.set_3d(player.get_camera());
-  crate.render();
+  for (auto it = crates.begin(); it != crates.end(); ++it) (*it)->render();
 }
 
 void Play_State::partial_step(const float &time_step, const Vector3f &velocity) {
@@ -126,16 +129,18 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   player.step(time_step);
   
   /** If collision with the crate has occurred, roll things back **/
-  if (crate.get_body().intersects(player.get_body())) {
-    if (moved) {
-      /** Play a sound if possible **/
-      crate.collide();
-      moved = false;
+  for (auto it = crates.begin(); it != crates.end(); ++it) {
+    if ((*it)->get_body().intersects(player.get_body())) {
+      if (moved) {
+        /** Play a sound if possible **/
+        (*it)->collide();
+        moved = false;
+      }
+      
+      player.set_position(backup_position);
+      
+      /** Bookkeeping for jumping controls **/
+      if (velocity.k < 0.0f) player.set_on_ground(true);
     }
-    
-    player.set_position(backup_position);
-    
-    /** Bookkeeping for jumping controls **/
-    if (velocity.k < 0.0f) player.set_on_ground(true);
   }
 }

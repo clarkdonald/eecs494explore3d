@@ -40,7 +40,7 @@ class Play_State : public Zeni::Gamestate_Base {
       bool right;
     } controls;
   
-    Crate crate;
+    std::list<Crate*> crates;
     Player player;
     bool moved;
 };
