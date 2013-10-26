@@ -1,16 +1,16 @@
 //
-//  Model_Includes.h
+//  Object_Includes.h
 //  game
 //
 //  Created by Donald Clark on 10/26/13.
 //
 //
 
-#ifndef MODEL_INCLUDES_H
-#define MODEL_INCLUDES_H
+#ifndef OBJECT_INCLUDES_H
+#define OBJECT_INCLUDES_H
 
 #include "Game_Object.h"
 #include "Crate.h"
 #include "Player.h"
 
-#endif /* MODEL_INCLUDES_H */
+#endif /* OBJECT_INCLUDES_H */

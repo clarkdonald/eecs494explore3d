@@ -37,7 +37,7 @@ Crate & Crate::operator=(const Crate &rhs) {
 }
 
 Crate::~Crate() {
-  if(!--instance_count) {
+  if (!--instance_count) {
     delete model;
     model = 0lu;
   }
@@ -45,11 +45,9 @@ Crate::~Crate() {
 
 void Crate::render() {
   const std::pair<Vector3f, float> cur_rotation = get_rotation().get_rotation();
-  
   model->set_translate(get_corner());
   model->set_scale(get_scale());
   model->set_rotate(cur_rotation.second, cur_rotation.first);
-
   model->render();
 }
 

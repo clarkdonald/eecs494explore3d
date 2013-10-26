@@ -27,7 +27,6 @@ class Crate : public Game_Object {
     virtual void render() override;
   
   private:
-    // Level 1
     static Zeni::Model * model;
     static unsigned long instance_count;
 };
