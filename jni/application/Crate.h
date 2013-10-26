@@ -24,27 +24,23 @@ class Crate {
     
     void collide();
     
-    const Zeni::Collision::Parallelepiped & get_body() const {return m_body;}
+    const Zeni::Collision::Parallelepiped & get_body() const {return body;}
     
   private:
     void create_body();
     
     // Level 1
-    static Zeni::Model * m_model;
-    static unsigned long m_instance_count;
-    
-    Zeni::Sound_Source * m_source;
+    static Zeni::Model * model;
+    static unsigned long instance_count;
+    Zeni::Sound_Source * source;
     
     // Level 2
-    Zeni::Point3f m_corner;
-    Zeni::Vector3f m_scale;
-    Zeni::Quaternion m_rotation;
+    Zeni::Point3f corner;
+    Zeni::Vector3f scale;
+    Zeni::Quaternion rotation;
     
     // Level 3
-    Zeni::Collision::Parallelepiped m_body; // not motion so much as collision
-    
-    // Level 4
-    // A stationary Crate has no controls
+    Zeni::Collision::Parallelepiped body; // not motion so much as collision
 };
 
 #endif /* CRATE_H */

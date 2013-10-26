@@ -18,20 +18,23 @@ class Player {
            const float radius_);
     
     // Level 1
-    const Zeni::Camera & get_camera() const {return m_camera;}
+    const Zeni::Camera & get_camera() const {return camera;}
     
     // Level 2
     void set_position(const Zeni::Point3f &position);
     
     void adjust_pitch(const float &phi);
+  
     void turn_left_xy(const float &theta);
     
     // Level 3
-    const Zeni::Collision::Capsule & get_body() const {return m_body;}
-    bool is_on_ground() const {return m_is_on_ground;}
+    const Zeni::Collision::Capsule & get_body() const {return body;}
+  
+    bool is_on_ground() const {return on_ground;}
     
-    const Zeni::Vector3f & get_velocity() const {return m_velocity;}
-    void set_velocity(const Zeni::Vector3f &velocity_) {m_velocity = velocity_;}
+    const Zeni::Vector3f & get_velocity() const {return velocity;}
+  
+    void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
     
     void set_on_ground(const bool &is_on_ground_);
   
@@ -43,20 +46,19 @@ class Player {
     void create_body();
     
     // Level 1/2
-    Zeni::Camera m_camera;
+    Zeni::Camera camera;
     
     // Level 2
-    Zeni::Vector3f m_end_point_b;
-    float m_radius;
+    Zeni::Vector3f end_point_b;
+  
+    float radius;
     
     // Level 3
-    Zeni::Collision::Capsule m_body; // collision
-    Zeni::Vector3f m_velocity;
-    bool m_is_on_ground;
-    
-    // Level 4
-    // Controls are external to Player
+    Zeni::Collision::Capsule body; // collision
+  
+    Zeni::Vector3f velocity;
+  
+    bool on_ground;
 };
 
 #endif /* PLAYER_H */
-

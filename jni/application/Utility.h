@@ -9,12 +9,4 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
-struct Controls {
-  Controls();
-  bool up;
-  bool left;
-  bool down;
-  bool right;
-};
-
 #endif /* UTILITY_H */

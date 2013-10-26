@@ -14,71 +14,64 @@ using namespace Zeni::Collision;
 Crate::Crate(const Point3f &corner_,
              const Vector3f &scale_,
              const Quaternion &rotation_)
-: m_source(new Sound_Source(get_Sounds()["collide"])),
-m_corner(corner_),
-m_scale(scale_),
-m_rotation(rotation_)
+: source(new Sound_Source(get_Sounds()["collide"])),
+  corner(corner_),
+  scale(scale_),
+  rotation(rotation_)
 {
-  if(!m_instance_count)
-    m_model = new Model("models/crate.3ds");
-  ++m_instance_count;
-  
+  if (!instance_count) model = new Model("models/crate.3ds");
+  ++instance_count;
   create_body();
 }
 
 Crate::Crate(const Crate &rhs)
-: m_source(new Sound_Source(get_Sounds()["collide"])),
-m_corner(rhs.m_corner),
-m_scale(rhs.m_scale),
-m_rotation(rhs.m_rotation)
+: source(new Sound_Source(get_Sounds()["collide"])),
+  corner(rhs.corner),
+  scale(rhs.scale),
+  rotation(rhs.rotation)
 {
-  ++m_instance_count;
-  
+  ++instance_count;
   create_body();
 }
 
 Crate & Crate::operator=(const Crate &rhs) {
-  m_corner = rhs.m_corner;
-  m_scale = rhs.m_scale;
-  m_rotation = rhs.m_rotation;
-  
+  corner = rhs.corner;
+  scale = rhs.scale;
+  rotation = rhs.rotation;
   create_body();
-  
   return *this;
 }
 
 Crate::~Crate() {
-  delete m_source;
-  
-  if(!--m_instance_count) {
-    delete m_model;
-    m_model = 0lu;
+  delete source;
+  if(!--instance_count) {
+    delete model;
+    model = 0lu;
   }
 }
 
 void Crate::render() {
-  const std::pair<Vector3f, float> rotation = m_rotation.get_rotation();
+  const std::pair<Vector3f, float> cur_rotation = rotation.get_rotation();
   
-  m_model->set_translate(m_corner);
-  m_model->set_scale(m_scale);
-  m_model->set_rotate(rotation.second, rotation.first);
-  
-  m_model->render();
+  model->set_translate(corner);
+  model->set_scale(scale);
+  model->set_rotate(cur_rotation.second, cur_rotation.first);
+
+  model->render();
 }
 
 void Crate::collide() {
-  if(!m_source->is_playing())
-    m_source->play();
+  if (!source->is_playing()) source->play();
 }
 
 void Crate::create_body() {
-  m_body = Parallelepiped(m_corner,
-                          m_rotation * m_scale.get_i(),
-                          m_rotation * m_scale.get_j(),
-                          m_rotation * m_scale.get_k());
+  body = Parallelepiped(corner,
+                        rotation * scale.get_i(),
+                        rotation * scale.get_j(),
+                        rotation * scale.get_k());
   
-  m_source->set_position(m_corner + m_rotation * m_scale / 2.0f);
+  source->set_position(corner + rotation * scale / 2.0f);
 }
 
-Model * Crate::m_model = 0;
-unsigned long Crate::m_instance_count = 0lu;
+Model * Crate::model = 0;
+unsigned long Crate::instance_count = 0lu;

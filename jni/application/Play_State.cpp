@@ -11,12 +11,16 @@
 using namespace Zeni;
 using namespace Zeni::Collision;
 
+Play_State::Controls::Controls()
+: forward(false),
+  left(false),
+  back(false),
+  right(false)
+{}
+
 Play_State::Play_State()
-: crate(Point3f(12.0f, 12.0f, 0.0f),
-          Vector3f(30.0f, 30.0f, 30.0f)),
-player(Camera(Point3f(0.0f, 0.0f, 50.0f),
-                Quaternion(),
-                1.0f, 10000.0f),
+: crate(Point3f(12.0f, 12.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)),
+  player(Camera(Point3f(0.0f, 0.0f, 50.0f), Quaternion(), 1.0f, 10000.0f),
          Vector3f(0.0f, 0.0f, -39.0f),
          11.0f)
 {
@@ -46,7 +50,7 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
       break;
       
     case SDLK_SPACE:
-      if(event.type == SDL_KEYDOWN) {
+      if (event.type == SDL_KEYDOWN) {
         player.jump();
         moved = true;
       }
@@ -80,20 +84,17 @@ void Play_State::perform_logic() {
   Vector3f z_vel = player.get_velocity().get_k();
   
   /** Bookkeeping for sound effects **/
-  if(velocity.magnitude() != 0.0f)
-    moved = true;
+  if(velocity.magnitude() != 0.0f) moved = true;
   
   /** Keep delays under control (if the program hangs for some time, we don't want to lose responsiveness) **/
-  if(processing_time > 0.1f)
-    processing_time = 0.1f;
+  if(processing_time > 0.1f) processing_time = 0.1f;
   
   /** Physics processing loop**/
-  for(float time_step = 0.05f;
+  for (float time_step = 0.05f;
       processing_time > 0.0f;
       processing_time -= time_step)
   {
-    if(time_step > processing_time)
-      time_step = processing_time;
+    if (time_step > processing_time) time_step = processing_time;
     
     /** Gravity has its effect **/
     z_vel -= Vector3f(0.0f, 0.0f, 50.0f * time_step);
@@ -105,7 +106,7 @@ void Play_State::perform_logic() {
     
     /** Keep player above ground; Bookkeeping for jumping controls **/
     const Point3f &position = player.get_camera().position;
-    if(position.z < 50.0f) {
+    if (position.z < 50.0f) {
       player.set_position(Point3f(position.x, position.y, 50.0f));
       player.set_on_ground(true);
     }
@@ -114,9 +115,7 @@ void Play_State::perform_logic() {
 
 void Play_State::render() {
   Video &vr = get_Video();
-  
   vr.set_3d(player.get_camera());
-  
   crate.render();
 }
 
@@ -127,9 +126,8 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   player.step(time_step);
   
   /** If collision with the crate has occurred, roll things back **/
-  if(crate.get_body().intersects(player.get_body())) {
-    if(moved)
-    {
+  if (crate.get_body().intersects(player.get_body())) {
+    if (moved) {
       /** Play a sound if possible **/
       crate.collide();
       moved = false;
@@ -138,7 +136,6 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
     player.set_position(backup_position);
     
     /** Bookkeeping for jumping controls **/
-    if(velocity.k < 0.0f)
-      player.set_on_ground(true);
+    if (velocity.k < 0.0f) player.set_on_ground(true);
   }
 }

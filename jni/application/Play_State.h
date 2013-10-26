@@ -14,15 +14,6 @@
 #include <zenilib.h>
 
 class Play_State : public Zeni::Gamestate_Base {
-    struct Controls {
-      Controls() : forward(false), left(false), back(false), right(false) {}
-      
-      bool forward;
-      bool left;
-      bool back;
-      bool right;
-    } controls;
-    
   public:
     Play_State();
     
@@ -40,10 +31,17 @@ class Play_State : public Zeni::Gamestate_Base {
     void partial_step(const float &time_step, const Zeni::Vector3f &velocity);
     
     Zeni::Time_HQ time_passed;
-    
+  
+    struct Controls {
+      Controls();
+      bool forward;
+      bool left;
+      bool back;
+      bool right;
+    } controls;
+  
     Crate crate;
     Player player;
-    
     bool moved;
 };
 
