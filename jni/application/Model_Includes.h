@@ -9,6 +9,7 @@
 #ifndef MODEL_INCLUDES_H
 #define MODEL_INCLUDES_H
 
+#include "Game_Object.h"
 #include "Crate.h"
 #include "Player.h"
 

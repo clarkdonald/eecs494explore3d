@@ -7,6 +7,8 @@
 //
 
 #include "Play_State.h"
+#include "Object_Factory.h"
+#include "Game_Object.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
@@ -15,7 +17,10 @@ Play_State::Controls::Controls()
 : forward(false),
   left(false),
   back(false),
-  right(false)
+  right(false),
+  pickup_item(false),
+  drop_item(false),
+  use_item(false)
 {}
 
 Play_State::Play_State()
@@ -26,8 +31,8 @@ Play_State::Play_State()
   set_pausable(true);
   
   /** Add terrain objects to the world **/
-  crates.push_back(new Crate(Point3f(12.0f, 12.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)));
-  crates.push_back(new Crate(Point3f(48.0f, 48.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)));
+  objects.push_back(create_object("Crate", Point3f(12.0f, 12.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)));
+  objects.push_back(create_object("Crate", Point3f(48.0f, 48.0f, 0.0f), Vector3f(30.0f, 30.0f, 30.0f)));
 }
 
 void Play_State::on_push() {
@@ -50,6 +55,18 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
       
     case SDLK_d:
       controls.right = event.type == SDL_KEYDOWN;
+      break;
+      
+    case SDLK_f:
+      controls.pickup_item = event.type == SDL_KEYDOWN;
+      break;
+      
+    case SDLK_g:
+      controls.drop_item = event.type == SDL_KEYDOWN;
+      break;
+      
+    case SDLK_r:
+      controls.use_item = event.type == SDL_KEYDOWN;
       break;
       
     case SDLK_SPACE:
@@ -119,7 +136,7 @@ void Play_State::perform_logic() {
 void Play_State::render() {
   Video &vr = get_Video();
   vr.set_3d(player.get_camera());
-  for (auto it = crates.begin(); it != crates.end(); ++it) (*it)->render();
+  for (auto it = objects.begin(); it != objects.end(); ++it) (*it)->render();
 }
 
 void Play_State::partial_step(const float &time_step, const Vector3f &velocity) {
@@ -129,7 +146,7 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   player.step(time_step);
   
   /** If collision with the crate has occurred, roll things back **/
-  for (auto it = crates.begin(); it != crates.end(); ++it) {
+  for (auto it = objects.begin(); it != objects.end(); ++it) {
     if ((*it)->get_body().intersects(player.get_body())) {
       if (moved) {
         /** Play a sound if possible **/

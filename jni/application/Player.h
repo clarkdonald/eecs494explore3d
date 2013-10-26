@@ -19,7 +19,7 @@ class Player {
     
     // Level 1
     const Zeni::Camera & get_camera() const {return camera;}
-    
+  
     // Level 2
     void set_position(const Zeni::Point3f &position);
     

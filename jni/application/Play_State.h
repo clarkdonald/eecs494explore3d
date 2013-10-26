@@ -9,9 +9,10 @@
 #ifndef PLAY_STATE_H
 #define PLAY_STATE_H
 
-#include "Crate.h"
 #include "Player.h"
 #include <zenilib.h>
+
+class Game_Object;
 
 class Play_State : public Zeni::Gamestate_Base {
   public:
@@ -38,12 +39,14 @@ class Play_State : public Zeni::Gamestate_Base {
       bool left;
       bool back;
       bool right;
+      bool pickup_item;
+      bool drop_item;
+      bool use_item;
     } controls;
   
-    std::list<Crate*> crates;
+    std::list<Game_Object*> objects;
     Player player;
     bool moved;
 };
 
 #endif /* PLAY_STATE_H */
-
