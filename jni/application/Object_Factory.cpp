@@ -7,7 +7,7 @@
 //
 
 #include "Object_Factory.h"
-#include "Model_Includes.h"
+#include "Object_Includes.h"
 
 using std::bad_alloc;
 using namespace Zeni;

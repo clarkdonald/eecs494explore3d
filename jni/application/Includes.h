@@ -12,6 +12,7 @@
 #include "Utility.h"
 #include "Object_Factory.h"
 #include "Object_Includes.h"
+#include "Player.h"
 #include "Play_State.h"
 #include "Instructions_State.h"
 #include "Title_State_Custom.h"

@@ -23,7 +23,6 @@ Player::Player(const Camera &camera_,
   create_body();
 }
 
-// Level 2
 void Player::set_position(const Point3f &position) {
   camera.position = position;
   create_body();
@@ -35,7 +34,7 @@ void Player::adjust_pitch(const float &phi) {
   
   camera.adjust_pitch(phi);
   
-  if(camera.get_up().k < 0.0f && backup_up.k >= 0.0f)
+  if (camera.get_up().k < 0.0f && backup_up.k >= 0.0f)
     camera.orientation = backup;
 }
 
@@ -64,8 +63,8 @@ void Player::create_body() {
   Sound &sr = get_Sound();
   
   body = Capsule(camera.position,
-                   camera.position + end_point_b,
-                   radius);
+                 camera.position + end_point_b,
+                 radius);
   
   sr.set_listener_position(camera.position);
   sr.set_listener_forward_and_up(camera.get_forward(), camera.get_up());

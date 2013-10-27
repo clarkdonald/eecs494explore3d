@@ -109,7 +109,7 @@ void Play_State::perform_logic() {
   /** Keep delays under control (if the program hangs for some time, we don't want to lose responsiveness) **/
   if (processing_time > 0.1f) processing_time = 0.1f;
   
-  /** Physics processing loop**/
+  /** Physics processing loop **/
   for (float time_step = 0.05f;
       processing_time > 0.0f;
       processing_time -= time_step)
