@@ -13,18 +13,20 @@ using namespace Zeni::Collision;
 
 Game_Object::Game_Object(const Point3f &corner_,
                          const Vector3f &scale_,
-                         const Quaternion &rotation_)
-: source(new Sound_Source(get_Sounds()["collide"])),
+                         const Quaternion &rotation_,
+                         Sound_Source *sound_)
+: source(sound_),
   corner(corner_),
   scale(scale_),
   rotation(rotation_)
 {}
 
 Game_Object::~Game_Object() {
-  delete source;
+  if (source != nullptr) delete source;
 }
 
 void Game_Object::collide() {
+  if (source == nullptr) return;
   if (!source->is_playing()) source->play();
 }
 
