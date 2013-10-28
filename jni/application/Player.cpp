@@ -17,7 +17,8 @@ Player::Player(const Camera &camera_,
 : camera(camera_),
   end_point_b(end_point_b_),
   radius(radius_),
-  on_ground(false)
+  on_ground(false),
+  wielding_weapon(false)
 {
   camera.fov_rad = Zeni::Global::pi / 3.0f;
   create_body();

@@ -31,6 +31,8 @@ class Player {
     const Zeni::Collision::Capsule & get_body() const {return body;}
   
     bool is_on_ground() const {return on_ground;}
+  
+    bool is_wielding_weapon() const {return wielding_weapon;}
     
     const Zeni::Vector3f & get_velocity() const {return velocity;}
   
@@ -59,6 +61,8 @@ class Player {
     Zeni::Vector3f velocity;
   
     bool on_ground;
+    
+    bool wielding_weapon;
 };
 
 #endif /* PLAYER_H */

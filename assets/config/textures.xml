@@ -8,4 +8,12 @@
     <filepath>textures/crate_light.png</filepath>
     <tile>1</tile>
   </CRATE.PNG>
+  <weapon_crosshair>
+    <filepath>textures/cross_hair.png</filepath>
+    <tile>0</tile>
+  </weapon_crosshair>
+  <normal_crosshair>
+    <filepath>textures/normal_cross_hair.png</filepath>
+    <tile>0</tile>
+  </normal_crosshair>
 </Textures>

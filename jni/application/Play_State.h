@@ -10,6 +10,7 @@
 #define PLAY_STATE_H
 
 #include "Player.h"
+#include "Crosshair.h"
 #include <zenilib.h>
 
 class Game_Object;
@@ -46,6 +47,7 @@ class Play_State : public Zeni::Gamestate_Base {
   
     std::list<Game_Object*> objects;
     Player player;
+    Crosshair crosshair;
     bool moved;
 };
 

@@ -9,9 +9,12 @@
 #include "Play_State.h"
 #include "Object_Factory.h"
 #include "Game_Object.h"
+#include "Utility.h"
+#include <utility>
 
 using namespace Zeni;
 using namespace Zeni::Collision;
+using std::make_pair;
 
 Play_State::Controls::Controls()
 : forward(false),
@@ -137,6 +140,9 @@ void Play_State::render() {
   Video &vr = get_Video();
   vr.set_3d(player.get_camera());
   for (auto it = objects.begin(); it != objects.end(); ++it) (*it)->render();
+  vr.set_2d(VIDEO_DIMENSION, true);
+  crosshair.render(player.is_wielding_weapon());
+  vr.clear_depth_buffer();
 }
 
 void Play_State::partial_step(const float &time_step, const Vector3f &velocity) {
