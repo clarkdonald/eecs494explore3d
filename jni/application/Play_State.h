@@ -21,7 +21,9 @@ class Game_Object;
 class Play_State : public Zeni::Gamestate_Base {
   public:
     Play_State();
-    
+  
+    ~Play_State();
+  
     void on_push();
   
     void on_pop();
@@ -29,7 +31,9 @@ class Play_State : public Zeni::Gamestate_Base {
     void on_key(const SDL_KeyboardEvent &event);
   
     void on_mouse_motion(const SDL_MouseMotionEvent &event);
-    
+  
+    void on_mouse_button(const SDL_MouseButtonEvent &event);
+  
     void perform_logic();
     
     void render();
@@ -37,7 +41,6 @@ class Play_State : public Zeni::Gamestate_Base {
   private:
     void partial_step(const float &time_step, const Zeni::Vector3f &velocity);
   
-
     void load_map(const std::string &file);
   
     Zeni::Time_HQ time_passed;
@@ -45,7 +48,7 @@ class Play_State : public Zeni::Gamestate_Base {
     std::list<Game_Object*> objects;
     Player* player;
     Crosshair crosshair;
-	float bow_power;
+	  float bow_power;
     bool moved;
     Dimension dimension;
 };

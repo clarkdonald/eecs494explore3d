@@ -42,6 +42,11 @@ Play_State::Play_State()
   load_map(Map_Manager::get_Instance().get_next());
 }
 
+Play_State::~Play_State() {
+  for (auto it = objects.begin(); it != objects.end(); ++it) delete *it;
+  delete player;
+}
+
 void Play_State::on_push() {
   get_Window().set_mouse_state(Window::MOUSE_RELATIVE);
 }
@@ -79,11 +84,6 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
     case SDLK_r:
       controls.use_item = event.type == SDL_KEYDOWN;
       break;
-
-	case SDLK_LCTRL:
-	case SDLK_RCTRL:
-      controls.shooting_arrow = event.type == SDL_KEYDOWN;
-      break;
       
     case SDLK_SPACE:
       if (event.type == SDL_KEYDOWN) {
@@ -96,6 +96,10 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
       Gamestate_Base::on_key(event);
       break;
   }
+}
+
+void Play_State::on_mouse_button(const SDL_MouseButtonEvent &event) {
+  controls.shooting_arrow = event.state == SDL_PRESSED;
 }
 
 void Play_State::on_mouse_motion(const SDL_MouseMotionEvent &event) {
@@ -148,15 +152,11 @@ void Play_State::perform_logic() {
   }
 
   /** Logic for shooting arrows **/
-  if(controls.shooting_arrow)
-  {
+  if (controls.shooting_arrow) {
 	  bow_power += time_step * 100;
-
-	  if(bow_power > 200)
-		  bow_power = 200.0f;
+	  if (bow_power > 200) bow_power = 200.0f;
   }
-  else if (bow_power >= 0.5f && !controls.shooting_arrow)
-  {
+  else if (bow_power >= 0.5f && !controls.shooting_arrow) {
 		player -> fire(bow_power);
 		bow_power = 0.0f;
   }
@@ -165,17 +165,14 @@ void Play_State::perform_logic() {
 }
 
 void Play_State::render(){
-    Video &vr = get_Video();
-    vr.set_3d(player->get_camera());
+  Video &vr = get_Video();
+  vr.set_3d(player->get_camera());
 	player->render_arrows();
 	render_skybox(player -> get_camera());
-
-	//end test
-
-    for (auto it = objects.begin(); it != objects.end(); ++it) (*it)->render();
-    vr.set_2d(VIDEO_DIMENSION, true);
-    crosshair.render(player->is_wielding_weapon());
-    vr.clear_depth_buffer();
+  for (auto it = objects.begin(); it != objects.end(); ++it) (*it)->render();
+  vr.set_2d(VIDEO_DIMENSION, true);
+  crosshair.render(player->is_wielding_weapon());
+  vr.clear_depth_buffer();
 }
 
 void Play_State::partial_step(const float &time_step, const Vector3f &velocity) {
@@ -247,7 +244,5 @@ void Play_State::load_map(const std::string &file) {
   }
   
   if (player == nullptr) throw new bad_exception;
-  
   next_file.close();
 }
-

@@ -28,10 +28,10 @@ class Bootstrap {
     }
   } m_goi;
 
-public:
-  Bootstrap() {
-    g_gzi = &m_goi;
-  }
+  public:
+    Bootstrap() {
+      g_gzi = &m_goi;
+    }
 } g_bootstrap;
 
 int main(int argc, char **argv) {
