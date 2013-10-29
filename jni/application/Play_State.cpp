@@ -9,6 +9,7 @@
 #include "Play_State.h"
 #include "Object_Factory.h"
 #include "Game_Object.h"
+#include "Arrow.h"
 #include "Utility.h"
 #include "Skybox.h"
 #include "Map_Manager.h"
@@ -137,8 +138,7 @@ void Play_State::perform_logic() {
   if (processing_time > 0.1f) processing_time = 0.1f;
   
   /** Physics processing loop **/
-  for (float time_step = 0.05f; processing_time > 0.0f; processing_time -= time_step)
-  {
+  for (float time_step = 0.05f; processing_time > 0.0f; processing_time -= time_step) {
     if (time_step > processing_time) time_step = processing_time;
     
     /** Gravity has its effect **/
@@ -163,18 +163,29 @@ void Play_State::perform_logic() {
 	  if (bow_power > 200) bow_power = 200.0f;
   }
   else if (bow_power >= 0.5f && !controls.shooting_arrow) {
-		player -> fire(bow_power);
+		arrows.push_back(player->fire(bow_power));
 		bow_power = 0.0f;
   }
-
-  player -> update_arrows(time_step);
+  
+  // TODO: we need to delete arrows when they collide or disappear the world.
+  // maybe collision with objects or skybox
+  for (auto it = arrows.begin(); it != arrows.end();) {
+    if ((*it)->is_done()) {
+      delete *it;
+      arrows.erase(it);
+    }
+    else {
+      (*it)->update(time_step);
+      it++;
+    }
+  }
 }
 
 void Play_State::render(){
   Video &vr = get_Video();
   vr.set_3d(player->get_camera());
-	player->render_arrows();
 	render_skybox(player -> get_camera());
+  for (auto it = arrows.begin(); it != arrows.end(); ++it) (*it)->render();
   for (auto it = objects.begin(); it != objects.end(); ++it) (*it)->render();
   vr.set_2d(VIDEO_DIMENSION, true);
   crosshair.render(player->is_wielding_weapon());

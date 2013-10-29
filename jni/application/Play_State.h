@@ -17,6 +17,7 @@
 #include <string>
 
 class Game_Object;
+class Arrow;
 
 class Play_State : public Zeni::Gamestate_Base {
   public:
@@ -46,6 +47,7 @@ class Play_State : public Zeni::Gamestate_Base {
     Zeni::Time_HQ time_passed;
     Controls controls;
     std::list<Game_Object*> objects;
+    std::list<Arrow*> arrows;
     Player* player;
     Crosshair crosshair;
 	  float bow_power;

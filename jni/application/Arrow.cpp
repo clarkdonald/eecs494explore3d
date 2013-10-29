@@ -31,9 +31,9 @@ void Arrow::render() {
   model->render();
 }
 
-//updates it on its flight, based on x/y velocities and gravity (TBI)
+// updates it on its flight, based on x/y velocities and gravity (TBI)
 void Arrow::update(const float& time_step) {
-	if(current_state == IN_MOTION)
+	if (current_state == IN_MOTION)
 		set_corner(get_corner() + time_step * 600 * forward);
 }
 

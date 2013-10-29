@@ -63,23 +63,6 @@ void Player::step(const float &time_step) {
   create_body();
 }
 
-void Player::update_arrows(const float& time_step)
-{
-	auto it = arrows.begin();
-	while(it != arrows.end())
-	{
-		if((*it) -> is_done())
-		{
-			arrows.erase(it);
-		}
-		else 
-		{
-			(*it)->update(time_step);
-			it++;
-		}
-	}
-}
-
 void Player::create_body() {
   Sound &sr = get_Sound();
   
@@ -93,17 +76,7 @@ void Player::create_body() {
 }
 
 // create arrow and add it to da list (TBI)
-void Player::fire(const float& bow_power)
-{
+Arrow * Player::fire(const float& bow_power) {
 	wielding_weapon = true;
-	arrows.push_back(new Arrow(camera.position + camera.get_forward() * 10, camera.get_forward(), bow_power));
-}
-
-void Player::render_arrows()
-{
-	for(auto arrow = arrows.begin(); arrow != arrows.end(); arrow++)
-	{
-		if(*arrow)
-			(*arrow)->render();
-	}
+  return new Arrow(camera.position + camera.get_forward() * 10, camera.get_forward(), bow_power);
 }
