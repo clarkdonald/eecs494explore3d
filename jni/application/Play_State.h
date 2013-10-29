@@ -11,6 +11,7 @@
 
 #include "Player.h"
 #include "Crosshair.h"
+#include "Skybox.h"
 #include <zenilib.h>
 
 class Game_Object;
@@ -43,11 +44,14 @@ class Play_State : public Zeni::Gamestate_Base {
       bool pickup_item;
       bool drop_item;
       bool use_item;
+	  bool shooting_arrow;
     } controls;
   
     std::list<Game_Object*> objects;
     Player player;
     Crosshair crosshair;
+	//Skybox skybox;
+	float bow_power;
     bool moved;
 };
 

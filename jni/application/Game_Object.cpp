@@ -36,5 +36,6 @@ void Game_Object::create_body() {
                         rotation * scale.get_j(),
                         rotation * scale.get_k());
   
-  source->set_position(corner + rotation * scale / 2.0f);
+  if(source)
+	source->set_position(corner + rotation * scale / 2.0f);
 }

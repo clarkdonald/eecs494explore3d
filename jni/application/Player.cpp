@@ -7,6 +7,9 @@
 //
 
 #include "Player.h"
+#include "Game_Object.h"
+#include "Arrow.h"
+#include "Object_Factory.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
@@ -56,8 +59,25 @@ void Player::jump() {
 }
 
 void Player::step(const float &time_step) {
-  camera.position += time_step * velocity;
+  camera.position += time_step * velocity * 2;
   create_body();
+}
+
+void Player::update_arrows(const float& time_step)
+{
+	auto it = arrows.begin();
+	while(it != arrows.end())
+	{
+		if((*it) -> is_done())
+		{
+			arrows.erase(it);
+		}
+		else 
+		{
+			(*it)->update(time_step);
+			it++;
+		}
+	}
 }
 
 void Player::create_body() {
@@ -70,4 +90,20 @@ void Player::create_body() {
   sr.set_listener_position(camera.position);
   sr.set_listener_forward_and_up(camera.get_forward(), camera.get_up());
   sr.set_listener_velocity(velocity);
+}
+
+// create arrow and add it to da list (TBI)
+void Player::fire(const float& bow_power)
+{
+	wielding_weapon = true;
+	arrows.push_back(new Arrow(camera.position + camera.get_forward() * 10, camera.get_forward(), bow_power));
+}
+
+void Player::render_arrows()
+{
+	for(auto arrow = arrows.begin(); arrow != arrows.end(); arrow++)
+	{
+		if(*arrow)
+			(*arrow)->render();
+	}
 }

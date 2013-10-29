@@ -8,6 +8,14 @@
     <filepath>textures/crate_light.png</filepath>
     <tile>1</tile>
   </CRATE.PNG>
+  <grass>
+    <filepath>textures/grass.png</filepath>
+    <tile>0</tile>
+  </grass>
+  <sky>
+    <filepath>textures/sky.png</filepath>
+    <tile>1</tile>
+  </sky>
   <weapon_crosshair>
     <filepath>textures/cross_hair.png</filepath>
     <tile>0</tile>

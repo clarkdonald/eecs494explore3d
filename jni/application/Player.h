@@ -10,7 +10,10 @@
 #define PLAYER_H
 
 #include <zenilib.h>
-  
+#include <vector>
+
+class Arrow;
+
 class Player {
   public:
     Player(const Zeni::Camera &camera_,
@@ -22,27 +25,25 @@ class Player {
   
     // Level 2
     void set_position(const Zeni::Point3f &position);
-    
     void adjust_pitch(const float &phi);
-  
     void turn_left_xy(const float &theta);
     
     // Level 3
     const Zeni::Collision::Capsule & get_body() const {return body;}
-  
     bool is_on_ground() const {return on_ground;}
-  
     bool is_wielding_weapon() const {return wielding_weapon;}
-    
     const Zeni::Vector3f & get_velocity() const {return velocity;}
-  
-    void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
-    
+   
+	void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
     void set_on_ground(const bool &is_on_ground_);
-  
-    void jump();
     
+	void jump();    
     void step(const float &time_step);
+	void update_arrows(const float& time_step);
+	
+	//functions related to arrows
+	void fire(const float& bow_power);
+	void render_arrows();
     
   private:
     void create_body();
@@ -57,12 +58,12 @@ class Player {
     
     // Level 3
     Zeni::Collision::Capsule body; // collision
-  
     Zeni::Vector3f velocity;
   
-    bool on_ground;
-    
+    bool on_ground; 
     bool wielding_weapon;
+
+	std::vector<Arrow*> arrows;
 };
 
 #endif /* PLAYER_H */
