@@ -205,6 +205,23 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   }
 }
 
+// checks to see if blocks can be arranged in a concave manner to save memory
+bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
+  if (y < 0 || y >= topology.size() || x < 0 || x >= topology[y].size()) {
+    return false;
+  }
+  
+  if (topology[y][x] <= topology[y+1][x] &&
+      topology[y][x] <= topology[y-1][x] &&
+      topology[y][x] <= topology[y][x+1] &&
+      topology[y][x] <= topology[y][x-1])
+  {
+    return true;
+  }
+  
+  return false;
+}
+
 void Play_State::load_map(const std::string &file) {
   ifstream next_file(file);
   
@@ -229,10 +246,17 @@ void Play_State::load_map(const std::string &file) {
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
       // create ground tile for entire map
       objects.push_back(create_object("Crate",Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 0.0f), GROUND_SIZE));
-      for (int i = 0; i < topology[height][width]; ++i) {
+      if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
         objects.push_back(
           create_object("Crate",
-            Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i+5.0f), OBJECT_SIZE));
+            Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)+5.0f), OBJECT_SIZE));
+      }
+      else {
+        for (int i = 0; i < topology[height][width]; ++i) {
+          objects.push_back(
+            create_object("Crate",
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i+5.0f), OBJECT_SIZE));
+        }
       }
       
       // check each terrain/item type and place them
