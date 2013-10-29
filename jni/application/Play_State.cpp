@@ -216,7 +216,9 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   }
 }
 
-// checks to see if blocks can be arranged in a concave manner to save memory
+/**
+ * Checks to see if blocks can be arranged in a concave manner to save memory.
+ */
 bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
   if (y < 0 || y >= topology.size() || x < 0 || x >= topology[y].size()) {
     return false;
@@ -233,18 +235,18 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
   return false;
 }
 
-void Play_State::load_map(const std::string &file) {
-  ifstream next_file(file);
+void Play_State::load_map(const std::string &file_) {
+  ifstream file(file_);
   
-  if (!next_file.is_open()) throw new bad_exception();
+  if (!file.is_open()) throw new bad_exception();
   
-  if (!(next_file >> dimension.height)) throw new bad_exception;
-  if (!(next_file >> dimension.width)) throw new bad_exception;
+  if (!(file >> dimension.height)) throw new bad_exception;
+  if (!(file >> dimension.width)) throw new bad_exception;
   
   vector< vector<int> > topology(dimension.height, vector<int>(dimension.width, 0));
   string line;
-  getline(next_file,line); // waste a newline
-  for (int height = 0; getline(next_file,line) && height < dimension.height;) {
+  getline(file,line); // waste a newline
+  for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
       topology[height][width] = line[width] - '0';
@@ -252,7 +254,7 @@ void Play_State::load_map(const std::string &file) {
     ++height;
   }
   
-  for (int height = 0; getline(next_file,line) && height < dimension.height;) {
+  for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
       // create ground tile for entire map
@@ -285,5 +287,5 @@ void Play_State::load_map(const std::string &file) {
   }
   
   if (player == nullptr) throw new bad_exception;
-  next_file.close();
+  file.close();
 }

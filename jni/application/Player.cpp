@@ -75,8 +75,12 @@ void Player::create_body() {
   sr.set_listener_velocity(velocity);
 }
 
-// create arrow and add it to da list (TBI)
 Arrow * Player::fire(const float& bow_power) {
 	wielding_weapon = true;
-  return new Arrow(camera.position + camera.get_forward() * 10, camera.get_forward(), bow_power);
+  return new Arrow(camera.position +
+                   camera.get_forward() * 10 +
+                   camera.get_left() * 12 +
+                   camera.get_up() * -12,
+                   camera.get_forward(),
+                   bow_power);
 }

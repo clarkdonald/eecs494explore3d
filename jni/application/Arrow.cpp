@@ -6,7 +6,8 @@ using namespace Zeni;
 Arrow::Arrow(const Point3f &corner_,
              const Vector3f& forward_,
              const float& power_)
-: Game_Object(corner_, Vector3f(.5f, .5f, .5f),
+: Game_Object(corner_,
+              Vector3f(.5f, .5f, .5f),
               Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), 0.0f),
               nullptr),
   current_state(IN_MOTION), forward(forward_), power(power_)

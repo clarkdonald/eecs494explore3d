@@ -42,7 +42,7 @@ class Play_State : public Zeni::Gamestate_Base {
   private:
     void partial_step(const float &time_step, const Zeni::Vector3f &velocity);
   
-    void load_map(const std::string &file);
+    void load_map(const std::string &file_);
   
     Zeni::Time_HQ time_passed;
     Controls controls;
