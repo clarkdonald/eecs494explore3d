@@ -1,0 +1,25 @@
+10
+15
+# topology
+000000000000000
+000000000000000
+444444444444444
+333333333333333
+333333333333333
+222222222222222
+222222222222222
+222222222222222
+111111111111111
+111111111111111
+111111111111111
+# terrain
+scccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc
+ccccccccccccccc

@@ -18,5 +18,6 @@ Game_Object * create_object(const String &type_,
                             const Quaternion &rotation_)
 {
   if (type_ == "Crate") return new Crate(corner_, scale_, rotation_);
+  else if (type_ == "Ground") return new Ground(corner_, scale_, rotation_);
   else throw new std::bad_alloc;
 }

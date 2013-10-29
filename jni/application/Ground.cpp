@@ -1,40 +1,34 @@
 //
-//  Crate.cpp
+//  Ground.cpp
 //  game
 //
-//  Created by Donald Clark on 10/26/13.
+//  Created by Donald Clark on 10/27/13.
 //
 //
 
-#include "Crate.h"
+#include "Ground.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
 
-Crate::Crate(const Point3f &corner_,
+Ground::Ground(const Point3f &corner_,
              const Vector3f &scale_,
              const Quaternion &rotation_)
-: Game_Object(corner_,
-              scale_,
-              rotation_,
-              new Sound_Source(get_Sounds()["collide"]))
+: Game_Object(corner_, scale_, rotation_)
 {
-  if (!instance_count) model = new Model("models/crate.3ds");
+  if (!instance_count) model = new Model("models/ground.3ds");
   ++instance_count;
   create_body();
 }
 
-Crate::Crate(const Crate &rhs)
-: Game_Object(rhs.get_corner(),
-              rhs.get_scale(),
-              rhs.get_rotation(),
-              new Sound_Source(get_Sounds()["collide"]))
+Ground::Ground(const Ground &rhs)
+: Game_Object(rhs.get_corner(), rhs.get_scale(), rhs.get_rotation())
 {
   ++instance_count;
   create_body();
 }
 
-Crate & Crate::operator=(const Crate &rhs) {
+Ground & Ground::operator=(const Ground &rhs) {
   set_corner(rhs.get_corner());
   set_scale(rhs.get_scale());
   set_rotation(rhs.get_rotation());
@@ -42,14 +36,14 @@ Crate & Crate::operator=(const Crate &rhs) {
   return *this;
 }
 
-Crate::~Crate() {
+Ground::~Ground() {
   if (!--instance_count) {
     delete model;
     model = 0lu;
   }
 }
 
-void Crate::render() {
+void Ground::render() {
   const std::pair<Vector3f, float> cur_rotation = get_rotation().get_rotation();
   model->set_translate(get_corner());
   model->set_scale(get_scale());
@@ -57,5 +51,5 @@ void Crate::render() {
   model->render();
 }
 
-Model * Crate::model = 0;
-unsigned long Crate::instance_count = 0lu;
+Model * Ground::model = 0;
+unsigned long Ground::instance_count = 0lu;

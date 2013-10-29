@@ -12,5 +12,6 @@
 #include "Game_Object.h"
 #include "Crate.h"
 #include "Arrow.h"
+#include "Ground.h"
 
 #endif /* OBJECT_INCLUDES_H */
