@@ -11,7 +11,9 @@
 
 #include "Player.h"
 #include "Crosshair.h"
+#include "Utility.h"
 #include <zenilib.h>
+#include <string>
 
 class Game_Object;
 
@@ -20,7 +22,9 @@ class Play_State : public Zeni::Gamestate_Base {
     Play_State();
     
     void on_push();
-    
+  
+    void on_pop();
+  
     void on_key(const SDL_KeyboardEvent &event);
   
     void on_mouse_motion(const SDL_MouseMotionEvent &event);
@@ -31,24 +35,16 @@ class Play_State : public Zeni::Gamestate_Base {
     
   private:
     void partial_step(const float &time_step, const Zeni::Vector3f &velocity);
-    
+  
+    void load_map(const std::string &file);
+  
     Zeni::Time_HQ time_passed;
-  
-    struct Controls {
-      Controls();
-      bool forward;
-      bool left;
-      bool back;
-      bool right;
-      bool pickup_item;
-      bool drop_item;
-      bool use_item;
-    } controls;
-  
+    Controls controls;
     std::list<Game_Object*> objects;
-    Player player;
+    Player* player;
     Crosshair crosshair;
     bool moved;
+    Dimension dimension;
 };
 
 #endif /* PLAY_STATE_H */
