@@ -40,11 +40,17 @@ Play_State::Play_State()
     get_Game().pop_state();
   }
   load_map(Map_Manager::get_Instance().get_next());
+  
+  Sound &sr = get_Sound();
+  sr.set_BGM("music/fortunedays");
+  sr.set_BGM_looping(true);
+  sr.play_BGM();
 }
 
 Play_State::~Play_State() {
   for (auto it = objects.begin(); it != objects.end(); ++it) delete *it;
   delete player;
+  get_Sound().stop_BGM();
 }
 
 void Play_State::on_push() {
