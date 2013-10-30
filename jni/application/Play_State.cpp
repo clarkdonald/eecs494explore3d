@@ -43,9 +43,9 @@ Play_State::Play_State()
   load_map(Map_Manager::get_Instance().get_next());
   
   Sound &sr = get_Sound();
-  sr.set_BGM("music/fortunedays");
-  sr.set_BGM_looping(true);
-  sr.play_BGM();
+  //sr.set_BGM("music/fortunedays");
+  //sr.set_BGM_looping(true);
+  //sr.play_BGM();
 }
 
 Play_State::~Play_State() {
