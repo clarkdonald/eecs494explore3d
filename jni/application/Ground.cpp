@@ -12,9 +12,9 @@ using namespace Zeni;
 using namespace Zeni::Collision;
 
 Ground::Ground(const Point3f &corner_,
-             const Vector3f &scale_,
-             const Quaternion &rotation_)
-: Game_Object(corner_, scale_, rotation_)
+               const Vector3f &scale_,
+               const Quaternion &rotation_)
+: Terrain(corner_, scale_, rotation_)
 {
   if (!instance_count) model = new Model("models/ground.3ds");
   ++instance_count;
@@ -22,7 +22,7 @@ Ground::Ground(const Point3f &corner_,
 }
 
 Ground::Ground(const Ground &rhs)
-: Game_Object(rhs.get_corner(), rhs.get_scale(), rhs.get_rotation())
+: Terrain(rhs.get_corner(), rhs.get_scale(), rhs.get_rotation())
 {
   ++instance_count;
   create_body();

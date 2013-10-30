@@ -19,6 +19,8 @@ class Player {
     Player(const Zeni::Camera &camera_,
            const Zeni::Vector3f &end_point_b_,
            const float radius_);
+  
+    ~Player();
     
     // Level 1
     const Zeni::Camera & get_camera() const {return camera;}
@@ -49,6 +51,7 @@ class Player {
     
     // Level 1/2
     Zeni::Camera camera;
+    Zeni::Sound_Source * source;
     
     // Level 2
     Zeni::Vector3f end_point_b;

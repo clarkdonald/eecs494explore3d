@@ -9,7 +9,6 @@
 #include "Player.h"
 #include "Game_Object.h"
 #include "Arrow.h"
-#include "Object_Factory.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
@@ -18,6 +17,7 @@ Player::Player(const Camera &camera_,
                const Vector3f &end_point_b_,
                const float radius_)
 : camera(camera_),
+  source(new Sound_Source(get_Sounds()["gunshot"])),
   end_point_b(end_point_b_),
   radius(radius_),
   on_ground(false),
@@ -25,6 +25,10 @@ Player::Player(const Camera &camera_,
 {
   camera.fov_rad = Zeni::Global::pi / 3.0f;
   create_body();
+}
+
+Player::~Player() {
+  delete source;
 }
 
 void Player::set_position(const Point3f &position) {
@@ -75,7 +79,10 @@ void Player::create_body() {
   sr.set_listener_velocity(velocity);
 }
 
+// TODO: need to be able to center the bullets when they get fired
 Arrow * Player::fire(const float& bow_power) {
+//  source->set_position(camera.position);
+//  if (!source->is_playing()) source->play();
 	wielding_weapon = true;
   return new Arrow(camera.position +
                    camera.get_forward() * 10 +

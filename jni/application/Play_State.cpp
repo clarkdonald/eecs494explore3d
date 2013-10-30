@@ -7,8 +7,8 @@
 //
 
 #include "Play_State.h"
-#include "Object_Factory.h"
-#include "Game_Object.h"
+#include "Terrain_Factory.h"
+#include "Terrain.h"
 #include "Arrow.h"
 #include "Utility.h"
 #include "Skybox.h"
@@ -43,13 +43,15 @@ Play_State::Play_State()
   load_map(Map_Manager::get_Instance().get_next());
   
   Sound &sr = get_Sound();
-  //sr.set_BGM("music/fortunedays");
-  //sr.set_BGM_looping(true);
-  //sr.play_BGM();
+
+  sr.set_BGM("music/fortunedays");
+  sr.set_BGM_looping(true);
+  sr.play_BGM();
+  std::cout << "SHIT";
 }
 
 Play_State::~Play_State() {
-  for (auto it = objects.begin(); it != objects.end(); ++it) delete *it;
+  for (auto it = terrains.begin(); it != terrains.end(); ++it) delete *it;
   delete player;
   get_Sound().stop_BGM();
 }
@@ -168,7 +170,7 @@ void Play_State::perform_logic() {
   }
   
   // TODO: we need to delete arrows when they collide or disappear the world.
-  // maybe collision with objects or skybox
+  // maybe collision with terrains or skybox
   for (auto it = arrows.begin(); it != arrows.end();) {
     if ((*it)->is_done()) {
       delete *it;
@@ -186,7 +188,7 @@ void Play_State::render(){
   vr.set_3d(player->get_camera());
 	render_skybox(player -> get_camera());
   for (auto it = arrows.begin(); it != arrows.end(); ++it) (*it)->render();
-  for (auto it = objects.begin(); it != objects.end(); ++it) (*it)->render();
+  for (auto it = terrains.begin(); it != terrains.end(); ++it) (*it)->render();
   vr.set_2d(VIDEO_DIMENSION, true);
   crosshair.render(player->is_wielding_weapon());
   vr.clear_depth_buffer();
@@ -200,14 +202,14 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   
   /** If collision with the crate has occurred, roll things back **/
 
-  for (auto it = objects.begin(); it != objects.end(); ++it) {
+  for (auto it = terrains.begin(); it != terrains.end(); ++it) {
     if ((*it)->get_body().intersects(player->get_body())) {
       if (moved) {
         /** Play a sound if possible **/
         (*it)->collide();
         moved = false;
       }
-      
+
       player->set_position(backup_position);
       
       /** Bookkeeping for jumping controls **/
@@ -223,6 +225,7 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
   if (y < 0 || y >= topology.size() || x < 0 || x >= topology[y].size()) {
     return false;
   }
+  
   
   if (topology[y][x] <= topology[y+1][x] &&
       topology[y][x] <= topology[y-1][x] &&
@@ -258,20 +261,20 @@ void Play_State::load_map(const std::string &file_) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
       // create ground tile for entire map
-      objects.push_back(create_object("Crate",Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 0.0f), GROUND_SIZE));
+      terrains.push_back(create_terrain("Crate",Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 0.0f), GROUND_SIZE));
       if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
-        objects.push_back(
-          create_object("Crate",
+        terrains.push_back(
+          create_terrain("Crate",
             Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)+5.0f), OBJECT_SIZE));
       }
       else {
         for (int i = 0; i < topology[height][width]; ++i) {
-          objects.push_back(
-            create_object("Crate",
+          terrains.push_back(
+            create_terrain("Crate",
               Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i+5.0f), OBJECT_SIZE));
         }
       }
-      
+
       // check each terrain/item type and place them
       if (line[width] == 's') {
         player = new Player(Camera(Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 55.0f),

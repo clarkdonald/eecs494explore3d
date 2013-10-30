@@ -20,11 +20,11 @@ class Game_Object {
   
     virtual ~Game_Object() = 0;
     virtual void render() = 0;
-	virtual void update(const float& time_step) { /*does nothing for some objects */ }
+	  virtual void update(const float& time_step) { /*does nothing for some objects */ }
     virtual void collide();
 
     const Zeni::Point3f & get_corner() const {return corner;}
-	const Zeni::Vector3f & get_scale() const {return scale;}
+	  const Zeni::Vector3f & get_scale() const {return scale;}
     const Zeni::Quaternion & get_rotation() const {return rotation;}
 
     void set_corner(const Zeni::Point3f &corner_) {corner = corner_;}

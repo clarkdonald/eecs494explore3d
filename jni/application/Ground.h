@@ -10,9 +10,10 @@
 #define GROUND_H
 
 #include <zenilib.h>
-#include "Game_Object.h"
+#include "Terrain.h"
+#include <zenilib.h>
 
-class Ground : public Game_Object {
+class Ground : public Terrain {
 public:
   Ground(const Zeni::Point3f &corner_ = Zeni::Point3f(0.0f, 0.0f, 0.0f),
          const Zeni::Vector3f &scale_ = Zeni::Vector3f(1.0f, 1.0f, 1.0f),
