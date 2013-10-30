@@ -10,6 +10,7 @@
 #define INCLUDES_H
 
 #include "Utility.h"
+#include "Item_Includes.h"
 #include "Terrain_Includes.h"
 #include "Player.h"
 #include "Crosshair.h"
