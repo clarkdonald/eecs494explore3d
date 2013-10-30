@@ -75,6 +75,7 @@ void Player::create_body() {
   sr.set_listener_velocity(velocity);
 }
 
+// TODO: need to be able to center the bullets when they get fired
 Arrow * Player::fire(const float& bow_power) {
 	wielding_weapon = true;
   return new Arrow(camera.position +
