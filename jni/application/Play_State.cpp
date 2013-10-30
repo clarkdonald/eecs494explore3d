@@ -46,7 +46,6 @@ Play_State::Play_State()
   sr.set_BGM("music/fortunedays");
   sr.set_BGM_looping(true);
   sr.play_BGM();
-  std::cout << "SHIT";
 }
 
 Play_State::~Play_State() {
@@ -259,27 +258,25 @@ void Play_State::load_map(const std::string &file_) {
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
-      // create ground tile for entire map
-      terrains.push_back(create_terrain("Crate",Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 0.0f), GROUND_SIZE));
-      if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
-        terrains.push_back(
-          create_terrain("Crate",
-            Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)+5.0f), OBJECT_SIZE));
-      }
-      else {
-        for (int i = 0; i < topology[height][width]; ++i) {
-          terrains.push_back(
-            create_terrain("Crate",
-              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i+5.0f), OBJECT_SIZE));
-        }
-      }
-
       // check each terrain/item type and place them
-      if (line[width] == 's') {
+      if (line[width] == '.');
+      else if (line[width] == 's') {
         player = new Player(Camera(Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 55.0f),
           Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
       }
       else if (line[width] == 'c') {
+        if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
+          terrains.push_back(
+            create_terrain("Crate",
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), OBJECT_SIZE));
+        }
+        else {
+          for (int i = 0; i < topology[height][width]; ++i) {
+            terrains.push_back(
+              create_terrain("Crate",
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), OBJECT_SIZE));
+          }
+        }
       }
       else {
         throw new bad_exception;
