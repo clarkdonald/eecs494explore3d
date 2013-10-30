@@ -10,9 +10,9 @@
 #define CRATE_H
 
 #include <zenilib.h>
-#include "Game_Object.h"
+#include "Terrain.h"
 
-class Crate : public Game_Object {
+class Crate : public Terrain {
   public:
     Crate(const Zeni::Point3f &corner_ = Zeni::Point3f(0.0f, 0.0f, 0.0f),
           const Zeni::Vector3f &scale_ = Zeni::Vector3f(1.0f, 1.0f, 1.0f),

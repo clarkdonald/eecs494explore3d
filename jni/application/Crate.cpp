@@ -14,10 +14,9 @@ using namespace Zeni::Collision;
 Crate::Crate(const Point3f &corner_,
              const Vector3f &scale_,
              const Quaternion &rotation_)
-: Game_Object(corner_,
-              scale_,
-              rotation_,
-              new Sound_Source(get_Sounds()["collide"]))
+: Terrain(corner_,
+          scale_,
+          rotation_)
 {
   if (!instance_count) model = new Model("models/crate.3ds");
   ++instance_count;
@@ -25,10 +24,9 @@ Crate::Crate(const Point3f &corner_,
 }
 
 Crate::Crate(const Crate &rhs)
-: Game_Object(rhs.get_corner(),
-              rhs.get_scale(),
-              rhs.get_rotation(),
-              new Sound_Source(get_Sounds()["collide"]))
+: Terrain(rhs.get_corner(),
+          rhs.get_scale(),
+          rhs.get_rotation())
 {
   ++instance_count;
   create_body();

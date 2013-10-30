@@ -9,7 +9,6 @@
 #include "Player.h"
 #include "Game_Object.h"
 #include "Arrow.h"
-#include "Object_Factory.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
