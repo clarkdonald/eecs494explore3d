@@ -221,10 +221,9 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
  * Checks to see if blocks can be arranged in a concave manner to save memory.
  */
 bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
-  if (y < 0 || y >= topology.size() || x < 0 || x >= topology[y].size()) {
+  if (y <= 0 || y >= (topology.size()-1) || x <= 0 || x >= (topology[y].size()-1)) {
     return false;
   }
-  
   
   if (topology[y][x] <= topology[y+1][x] &&
       topology[y][x] <= topology[y-1][x] &&
@@ -255,7 +254,7 @@ void Play_State::load_map(const std::string &file_) {
     }
     ++height;
   }
-  
+
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
