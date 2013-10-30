@@ -31,4 +31,7 @@ HOWTO:  To convert between types, or to downmix to mono,
   <collide>
     <filepath>sfx/31624__Srehpog__light_crate_smash3</filepath>
   </collide>
+  <gunshot>
+    <filepath>sfx/gunshot</filepath>
+  </gunshot>
 </Sounds>

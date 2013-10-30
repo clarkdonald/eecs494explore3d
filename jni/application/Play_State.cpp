@@ -224,6 +224,7 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
     return false;
   }
   
+  
   if (topology[y][x] <= topology[y+1][x] &&
       topology[y][x] <= topology[y-1][x] &&
       topology[y][x] <= topology[y][x+1] &&
