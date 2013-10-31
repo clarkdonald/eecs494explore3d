@@ -158,19 +158,28 @@ void Game_State::perform_logic() {
     partial_step(time_step, x_vel);
     partial_step(time_step, y_vel);
     partial_step(time_step, z_vel);
-    
-    if (player->is_wielding_item()) {
-      if (controls.drop_item) {
-        Item* item = player->drop_item();
-        Point3f pos = Point3f(player->get_camera().position.x,
-                              player->get_camera().position.y,
-                              player->get_camera().position.z - CAMERA_HEIGHT);
-        item->set_corner(pos);
-        items.push_back(item);
-      }
-      else if (controls.use_item) {
+
+    /** Keep player above ground; Bookkeeping for jumping controls **/
+    const Point3f &position = player->get_camera().position;
+    if (position.z < 50.0f) {
+      player->set_position(Point3f(position.x, position.y, 50.0f));
+      player->set_on_ground(true);
+    }
+  }
+  
+  /** Logic for items **/
+  if (player->is_wielding_item()) {
+    if (controls.drop_item) {
+      Item* item = player->drop_item();
+      Point3f pos = Point3f(player->get_camera().position.x,
+                            player->get_camera().position.y,
+                            player->get_camera().position.z - CAMERA_HEIGHT);
+      item->set_corner(pos);
+      items.push_back(item);
+    }
+    else if (controls.use_item) {
+      if (!use_timer.is_running()) {
         if (player->can_lift()) {
-          std::cout << "CAN LIFT!\n";
           if (player->is_lifting_terrain()) {
             Terrain* terrain = player->drop_terrain();
             Point3f pos = Point3f(player->get_camera().position.x,
@@ -182,9 +191,7 @@ void Game_State::perform_logic() {
           else {
             for (auto it = terrains.begin(); it != terrains.end(); ++it) {
               if ((*it)->is_portable()) {
-                std::cout << "IS PORTABLE!\n";
                 if ((*it)->get_body().intersects(player->get_body())) {
-                  std::cout << "INTERSECT!\n";
                   player->set_terrain(*it);
                   terrains.erase(it);
                   break;
@@ -193,25 +200,23 @@ void Game_State::perform_logic() {
             }
           }
         }
+        use_timer.reset();
+        use_timer.start();
+      }
+      else {
+        if (use_timer.seconds() > 0.3f) use_timer.stop();
       }
     }
-    else {
-      if (controls.pickup_item) {
-        for (auto it = items.begin(); it != items.end(); ++it) {
-          if ((*it)->get_body().intersects(player->get_body())) {
-            player->set_item(*it);
-            items.erase(it);
-            break;
-          }
+  }
+  else {
+    if (controls.pickup_item) {
+      for (auto it = items.begin(); it != items.end(); ++it) {
+        if ((*it)->get_body().intersects(player->get_body())) {
+          player->set_item(*it);
+          items.erase(it);
+          break;
         }
       }
-    }
-
-    /** Keep player above ground; Bookkeeping for jumping controls **/
-    const Point3f &position = player->get_camera().position;
-    if (position.z < 50.0f) {
-      player->set_position(Point3f(position.x, position.y, 50.0f));
-      player->set_on_ground(true);
     }
   }
 
@@ -395,10 +400,10 @@ void Game_State::load_map(const std::string &file_) {
           if (Map_Manager::get_Instance().find_combo_terrain(line[width])) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), MEDIUM_SIZE));
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width]), SKINNY_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width]-SKINNY_HEIGHT), SKINNY_SIZE));
           }
           else if (Map_Manager::get_Instance().find_placement_terrain(line[width])) {
             terrains.push_back(
@@ -419,14 +424,17 @@ void Game_State::load_map(const std::string &file_) {
         }
         else if (Map_Manager::get_Instance().find_combo_terrain(line[width])) {
           int i = 0;
-          for (; i < topology[height][width]; ++i) {
+          for (; i < (topology[height][width]-1); ++i) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
                 Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
           }
           terrains.push_back(
+            create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(i++)), MEDIUM_SIZE));
+          terrains.push_back(
             create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
-              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), SKINNY_SIZE));
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i-SKINNY_HEIGHT), SKINNY_SIZE));
         }
         else if (Map_Manager::get_Instance().find_placement_terrain(line[width])) {
           int i = 0;

@@ -51,7 +51,7 @@ void Potion::render() {
   model->render();
 }
 
-bool Potion::for_pushing() const {
+bool Potion::for_lifting() const {
   return true;
 }
 

@@ -24,7 +24,7 @@ class Item : public Game_Object {
     
     virtual bool for_extinguishing() const;
     
-    virtual bool for_pushing() const;
+    virtual bool for_lifting() const;
     
     virtual bool for_water_filling() const;
 };

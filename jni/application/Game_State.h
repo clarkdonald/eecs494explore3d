@@ -54,6 +54,7 @@ private:
   void load_map(const std::string &file_);
   
   Zeni::Time_HQ time_passed;
+  Zeni::Chronometer<Zeni::Time> use_timer;
   Controls controls;
   std::list<Item*> items;
   std::list<Terrain*> terrains;

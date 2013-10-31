@@ -25,7 +25,7 @@ void Player::Abilities::clear() {
 }
 
 void Player::Abilities::set(const Item *item_) {
-  lift = item_->for_pushing();
+  lift = item_->for_lifting();
 }
 
 Player::Player(const Camera &camera_,
@@ -44,7 +44,10 @@ Player::Player(const Camera &camera_,
   create_body();
 }
 
-Player::~Player() {}
+Player::~Player() {
+  if (terrain != nullptr) delete terrain;
+  if (item != nullptr) delete item;
+}
 
 void Player::set_position(const Point3f &position) {
   camera.position = position;
