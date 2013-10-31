@@ -240,14 +240,18 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
 void Play_State::load_map(const std::string &file_) {
   ifstream file(file_);
   
-  if (!file.is_open()) throw new bad_exception();
-  
+  int start_x, start_y;
+  if (!file.is_open()) throw new bad_exception;
   if (!(file >> dimension.height)) throw new bad_exception;
   if (!(file >> dimension.width)) throw new bad_exception;
+  if (!(file >> start_y)) throw new bad_exception;
+  if (!(file >> start_x)) throw new bad_exception;
   
   vector< vector<int> > topology(dimension.height, vector<int>(dimension.width, 0));
   string line;
   getline(file,line); // waste a newline
+  
+  /** Read topology from text file **/
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
@@ -256,15 +260,12 @@ void Play_State::load_map(const std::string &file_) {
     ++height;
   }
 
+  /** Read terrain from text file **/
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
       // check each terrain/item type and place them
       if (line[width] == '.');
-      else if (line[width] == '*') {
-        player = new Player(Camera(Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 55.0f),
-          Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
-      }
       else if (Map_Manager::get_Instance().find_terrain(line[width])) {
         if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
           terrains.push_back(
@@ -286,6 +287,10 @@ void Play_State::load_map(const std::string &file_) {
     ++height;
   }
   
-  if (player == nullptr) throw new bad_exception;
+  /** Make sure we aren't placing a player inside a terrain **/
+  if (check_concavity(topology,start_y,start_x)) throw new bad_exception;
+  player = new Player(Camera(Point3f(UNIT_LENGTH*start_x, UNIT_LENGTH*start_y, 55.0f),
+                      Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
+  
   file.close();
 }
