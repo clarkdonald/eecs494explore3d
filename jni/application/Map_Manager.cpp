@@ -33,14 +33,17 @@ Map_Manager::Map_Manager()
     files.push_back(str);
   }
   
-  /** load the character mapping for special terrains **/
-  special_terrain_charmap['g'] = make_pair("Ground", "Grass");
+  /** load the character mapping for combo terrains **/
+  combo_terrain_charmap['g'] = make_pair("Dirt", "Grass");
   
   /** load the character mapping for terrains **/
   terrain_charmap['c'] = "Concrete";
   terrain_charmap['g'] = "Grass";
   terrain_charmap['s'] = "Stone";
-  terrain_charmap['G'] = "Ground";
+  terrain_charmap['d'] = "Dirt";
+  terrain_charmap['S'] = "Sand";
+  terrain_charmap['y'] = "Cloud";
+  terrain_charmap['w'] = "Water";
   terrain_charmap['C'] = "Crate";
 
   /** load the character mapping for items **/
@@ -71,13 +74,13 @@ const String & Map_Manager::get_terrain(char c) const {
   return it->second;
 }
 
-bool Map_Manager::find_special_terrain(char c) const {
-  return special_terrain_charmap.find(c) != special_terrain_charmap.end();
+bool Map_Manager::find_combo_terrain(char c) const {
+  return combo_terrain_charmap.find(c) != combo_terrain_charmap.end();
 }
 
-const std::pair<String, String> & Map_Manager::get_special_terrain(char c) const {
+const std::pair<String, String> & Map_Manager::get_combo_terrain(char c) const {
   map<char, pair<String, String> >::const_iterator it;
-  if ((it = special_terrain_charmap.find(c)) == special_terrain_charmap.end())
+  if ((it = combo_terrain_charmap.find(c)) == combo_terrain_charmap.end())
     throw new bad_exception;
   return it->second;
 }

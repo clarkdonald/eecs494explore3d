@@ -263,6 +263,7 @@ void Play_State::load_map(const std::string &file_) {
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
+      std::cout << height << ' ' << width << std::endl;
       /** check each terrain/item type and place them **/
       if (line[width] == '.');
       else if (Map_Manager::get_Instance().find_terrain(line[width])) {
@@ -271,15 +272,15 @@ void Play_State::load_map(const std::string &file_) {
               create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
                 Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), OBJECT_SIZE));
         }
-        else if (Map_Manager::get_Instance().find_special_terrain(line[width])) {
+        else if (Map_Manager::get_Instance().find_combo_terrain(line[width])) {
           int i = 0;
           for (; i < topology[height][width]; ++i) {
             terrains.push_back(
-              create_terrain(Map_Manager::get_Instance().get_special_terrain(line[width]).first,
+              create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
                 Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), OBJECT_SIZE));
           }
           terrains.push_back(
-            create_terrain(Map_Manager::get_Instance().get_special_terrain(line[width]).second,
+            create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
               Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), SKINNY_SIZE));
         }
         else {
@@ -298,7 +299,7 @@ void Play_State::load_map(const std::string &file_) {
   }
   
   /** Make sure we aren't placing a player inside a terrain **/
-  if (check_concavity(topology,start_y,start_x)) throw new bad_exception;
+  if (!check_concavity(topology,start_y,start_x)) throw new bad_exception;
   player = new Player(Camera(Point3f(UNIT_LENGTH*start_x, UNIT_LENGTH*start_y, 55.0f),
                       Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
   

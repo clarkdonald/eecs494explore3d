@@ -30,9 +30,9 @@ class Map_Manager {
   
     const Zeni::String & get_terrain(char c) const;
   
-    bool find_special_terrain(char c) const;
+    bool find_combo_terrain(char c) const;
   
-    const std::pair<Zeni::String, Zeni::String> & get_special_terrain(char c) const;
+    const std::pair<Zeni::String, Zeni::String> & get_combo_terrain(char c) const;
   
     bool find_item(char c) const;
   
@@ -47,7 +47,7 @@ class Map_Manager {
     
     int index;
     std::vector<std::string> files;
-    std::map<char, std::pair<Zeni::String, Zeni::String> > special_terrain_charmap;
+    std::map<char, std::pair<Zeni::String, Zeni::String> > combo_terrain_charmap;
     std::map<char, Zeni::String> terrain_charmap;
     std::map<char, Zeni::String> item_charmap;
 };
