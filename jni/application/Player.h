@@ -36,12 +36,15 @@ class Player {
     bool is_wielding_weapon() const {return wielding_weapon;}
     const Zeni::Vector3f & get_velocity() const {return velocity;}
    
-	  void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
+	void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
     void set_on_ground(const bool &is_on_ground_);
   
-	  void jump();
+	void jump();
     void step(const float &time_step);
-	  void update_arrows(const float& time_step);
+	void update_arrows(const float& time_step);
+	void take_damage(int damage) {health -= damage;};
+
+	bool is_dead() { return health <= 0;}
 	
     //functions related to arrows
     Arrow * fire(const float& bow_power);
@@ -64,6 +67,7 @@ class Player {
   
     bool on_ground; 
     bool wielding_weapon;
+	int health;
 };
 
 #endif /* PLAYER_H */

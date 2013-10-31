@@ -24,6 +24,7 @@ Player::Player(const Camera &camera_,
   wielding_weapon(false)
 {
   camera.fov_rad = Zeni::Global::pi / 3.0f;
+  health = 5;
   create_body();
 }
 
@@ -84,10 +85,7 @@ Arrow * Player::fire(const float& bow_power) {
 //  source->set_position(camera.position);
 //  if (!source->is_playing()) source->play();
 	wielding_weapon = true;
-  return new Arrow(camera.position +
-                   camera.get_forward() * 10 +
-                   camera.get_left() * 12 +
-                   camera.get_up() * -12,
+    return new Arrow(camera.position + Vector3f(18.0, 18.0, 3.0),
                    camera.get_forward(),
                    bow_power);
 }

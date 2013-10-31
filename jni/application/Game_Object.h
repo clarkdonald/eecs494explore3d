@@ -20,7 +20,7 @@ class Game_Object {
   
     virtual ~Game_Object() = 0;
     virtual void render() = 0;
-	  virtual void update(const float& time_step) { /*does nothing for some objects */ }
+	virtual void update(const float& time_step) { /*does nothing for some objects */ }
     virtual void collide();
 
     const Zeni::Point3f & get_corner() const {return corner;}
@@ -33,7 +33,7 @@ class Game_Object {
     const Zeni::Collision::Parallelepiped & get_body() const {return body;}
   
   protected:
-    void create_body();
+    virtual void create_body();
   
   private:
     // Level 1

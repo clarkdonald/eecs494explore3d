@@ -9,9 +9,12 @@
 #include "Play_State.h"
 #include "Terrain_Factory.h"
 #include "Terrain.h"
+#include "Monster.h"
+#include "White_Ghost.h"
 #include "Item_Factory.h"
 #include "Item.h"
 #include "Arrow.h"
+#include "Crate.h"
 #include "Utility.h"
 #include "Skybox.h"
 #include "Map_Manager.h"
@@ -51,6 +54,12 @@ Play_State::Play_State()
   sr.play_BGM();
 
   clouds.push_back(new Cloud(Point3f(0.0f, 0.0f, 0.0f), 0));
+
+  monsters.push_back(new White_Ghost(Point3f(2500.0f, 3600.0f, 50.0f)));
+  monsters.push_back(new White_Ghost(Point3f(2600.0f, 3700.0f, 50.0f)));
+  monsters.push_back(new White_Ghost(Point3f(2700.0f, 3750.0f, 50.0f)));
+
+  terrains.push_back(new Crate(Point3f(0.0f, -130.0f, 0.0f), Vector3f(UNIT_LENGTH, UNIT_LENGTH, UNIT_LENGTH)));
 }
 
 Play_State::~Play_State() {
@@ -129,6 +138,19 @@ void Play_State::perform_logic() {
 
   //move the clouds
   for(auto cloud : clouds) cloud -> update(time_step);
+
+  //have monsters run their AI. delete them if they are dead.
+  for(auto it = monsters.begin(); it != monsters.end();)
+  {
+	  (*it) -> update(time_step);
+	  if((*it) -> is_dead())
+	  {
+		  delete (*it);
+		  it = monsters.erase(it);
+	  }
+	  else
+		  it++;
+  }
   
   /** Get forward and left vectors in the XY-plane **/
   const Vector3f forward = player->get_camera().get_forward().get_ij().normalized();
@@ -180,11 +202,23 @@ void Play_State::perform_logic() {
   // TODO: we need to delete arrows when they collide or disappear the world.
   // maybe collision with terrains or skybox
   for (auto it = arrows.begin(); it != arrows.end();) {
-    if ((*it)->is_done()) {
+    
+	bool is_done = false;
+	for(auto monster : monsters)
+	{
+		if((*it)->get_body().intersects(monster->get_body()))
+		{
+			monster -> take_damage(1);
+			is_done = true;
+		}
+	}
+
+	if (is_done) {
       delete *it;
-      arrows.erase(it);
+      it = arrows.erase(it);
     }
-    else {
+    else 
+	{
       (*it)->update(time_step);
       it++;
     }
@@ -194,8 +228,9 @@ void Play_State::perform_logic() {
 void Play_State::render(){
   Video &vr = get_Video();
   vr.set_3d(player->get_camera());
-	render_skybox(player -> get_camera());
+  render_skybox(player -> get_camera());
   for(auto cloud : clouds) cloud -> render();
+  for(auto monster : monsters) monster -> render();
   for (auto it = arrows.begin(); it != arrows.end(); ++it) (*it)->render();
   for (auto it = terrains.begin(); it != terrains.end(); ++it) (*it)->render();
   vr.set_2d(VIDEO_DIMENSION, true);
@@ -223,6 +258,16 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
       /** Bookkeeping for jumping controls **/
       if (velocity.k < 0.0f) player->set_on_ground(true);
     }
+  }
+
+  //collision between mosnter and player 
+  for(auto monster : monsters)
+  {
+	  if(monster -> get_body().intersects(player->get_body()))
+	  {
+		  player -> set_position(player -> get_camera().position + player->get_camera().get_forward() * -50);
+		  player -> take_damage(monster -> get_damage());
+	  }
   }
 }
 

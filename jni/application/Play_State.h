@@ -20,6 +20,7 @@ class Terrain;
 class Item;
 class Arrow;
 class Cloud;
+class Monster;
 
 class Play_State : public Zeni::Gamestate_Base {
   public:
@@ -52,9 +53,10 @@ class Play_State : public Zeni::Gamestate_Base {
     std::list<Terrain*> terrains;
     std::list<Arrow*> arrows;
 	std::list<Cloud*> clouds;
+	std::list<Monster*> monsters;
     Player* player;
     Crosshair crosshair;
-	  float bow_power;
+    float bow_power;
     bool moved;
     Dimension dimension;
 };
