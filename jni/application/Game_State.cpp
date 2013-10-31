@@ -296,22 +296,22 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
   player->step(time_step);
   
   /** If collision with terrain has occurred, roll things back **/
-  if (!player->can_walk_through_terrain()) {
-    for (auto it = terrains.begin(); it != terrains.end(); ++it) {
-      if ((*it)->get_body().intersects(player->get_body())) {
-        if ((*it)->is_portal()) done = true;
-        
-        if (moved) {
-          /** Play a sound if possible **/
-          (*it)->collide();
-          moved = false;
-        }
-        
-        player->set_position(backup_position);
-        
-        /** Bookkeeping for jumping controls **/
-        if (velocity.k < 0.0f) player->set_on_ground(true);
+  for (auto it = terrains.begin(); it != terrains.end(); ++it) {
+    if ((*it)->get_body().intersects(player->get_body())) {
+      if ((*it)->is_portal()) done = true;
+      else if (player->can_walk_through_terrain() && !(*it)->is_fire()) continue;
+      else if (player->can_walk_through_fire() && (*it)->is_fire()) continue;
+      
+      if (moved) {
+        /** Play a sound if possible **/
+        (*it)->collide();
+        moved = false;
       }
+      
+      player->set_position(backup_position);
+      
+      /** Bookkeeping for jumping controls **/
+      if (velocity.k < 0.0f) player->set_on_ground(true);
     }
   }
   
@@ -414,10 +414,10 @@ void Game_State::load_map(const std::string &file_) {
           else if (Map_Manager::get_Instance().find_placement_terrain(line[width])) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).first,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1))));
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).second,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width]), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width])));
           }
           else {
             terrains.push_back(
@@ -425,7 +425,7 @@ void Game_State::load_map(const std::string &file_) {
                 Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 0.0f), SKINNY_SIZE));
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1))));
           }
         }
         else if (Map_Manager::get_Instance().find_combo_terrain(line[width])) {
@@ -433,7 +433,7 @@ void Game_State::load_map(const std::string &file_) {
           for (; i < (topology[height][width]-1); ++i) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i)));
           }
           terrains.push_back(
             create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
@@ -447,17 +447,17 @@ void Game_State::load_map(const std::string &file_) {
           for (; i < topology[height][width]; ++i) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).first,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i)));
           }
           terrains.push_back(
             create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).second,
-              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i)));
         }
         else {
           for (int i = 0; i < topology[height][width]; ++i) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i)));
           }
         }
       }

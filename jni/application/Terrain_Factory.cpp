@@ -8,6 +8,7 @@
 
 #include "Terrain_Factory.h"
 #include "Terrain_Includes.h"
+#include "Utility.h"
 
 using std::bad_alloc;
 using namespace Zeni;
@@ -19,6 +20,7 @@ Terrain * create_terrain(const String &type_,
 {
   if (type_ == "Crate") return new Crate(corner_, scale_, rotation_);
   else if (type_ == "Portal") return new Portal(corner_, scale_, rotation_);
+  else if (type_ == "Fire") return new Fire(corner_, FIRE_SIZE, rotation_);
   else if (type_ == "Stone") return new Solid_Terrain("models/stone_block.3ds", corner_, scale_, rotation_);
   else if (type_ == "Brick") return new Solid_Terrain("models/brick_block.3ds", corner_, scale_, rotation_);
   else if (type_ == "Grass") return new Solid_Terrain("models/grass_block.3ds", corner_, scale_, rotation_);

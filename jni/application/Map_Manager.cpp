@@ -50,6 +50,7 @@ Map_Manager::Map_Manager()
   terrain_charmap['w'] = "Water";
   terrain_charmap['C'] = "Crate";
   terrain_charmap['p'] = "Portal";
+  terrain_charmap['f'] = "Fire";
 
   /** load the character mapping for items **/
   item_charmap['l'] = "Leg";

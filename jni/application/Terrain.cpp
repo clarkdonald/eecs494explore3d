@@ -26,22 +26,6 @@ bool Terrain::is_portable() const {
   return false;
 }
 
-bool Terrain::is_cuttable() const {
-  return false;
-}
-
-bool Terrain::is_water_filling() const {
-  return false;
-}
-
-bool Terrain::is_extinguishable() const {
-  return false;
-}
-
-bool Terrain::is_crushable() const {
-  return false;
-}
-
-bool Terrain::is_forced_move() const {
+bool Terrain::is_fire() const {
   return false;
 }

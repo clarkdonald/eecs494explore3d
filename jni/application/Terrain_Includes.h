@@ -13,5 +13,6 @@
 #include "Solid_Terrain.h"
 #include "Crate.h"
 #include "Portal.h"
+#include "Fire.h"
 
 #endif /* TERRAIN_INCLUDES_H */

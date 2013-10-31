@@ -25,15 +25,7 @@ class Terrain : public Game_Object {
   
     virtual bool is_portable() const;
   
-    virtual bool is_cuttable() const;
-    
-    virtual bool is_water_filling() const;
-    
-    virtual bool is_extinguishable() const;
-    
-    virtual bool is_crushable() const;
-    
-    virtual bool is_forced_move() const;
+    virtual bool is_fire() const;
 };
 
 #endif /* TERRAIN_H */
