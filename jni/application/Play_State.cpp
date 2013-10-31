@@ -36,7 +36,6 @@ void Play_State::on_pop() {
 
 void Play_State::on_key(const SDL_KeyboardEvent &event) {
   if (event.keysym.sym == SDLK_p && event.type == SDL_KEYDOWN) {
-    std::cout << "POOP!\n";
     string file = game_state->is_common() ?
       Map_Manager::get_Instance().get_common_room() :
       Map_Manager::get_Instance().get_previous();

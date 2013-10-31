@@ -26,6 +26,8 @@ class Crate : public Terrain {
     
     virtual void render() override;
   
+    bool is_portable() const override;
+  
   private:
     static Zeni::Model * model;
     static unsigned long instance_count;

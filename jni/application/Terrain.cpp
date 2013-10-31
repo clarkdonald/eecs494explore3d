@@ -22,6 +22,10 @@ bool Terrain::is_portal() const {
   return false;
 }
 
+bool Terrain::is_portable() const {
+  return false;
+}
+
 bool Terrain::is_cuttable() const {
   return false;
 }

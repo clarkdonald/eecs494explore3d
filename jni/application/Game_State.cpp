@@ -116,9 +116,7 @@ void Game_State::on_mouse_motion(const SDL_MouseMotionEvent &event) {
   player->turn_left_xy(-event.xrel / 500.0f);
 }
 
-void Game_State::perform_logic() {
-  if (done) std::cout << "FUCK MY AS!";
-  
+void Game_State::perform_logic() {  
   const Time_HQ current_time = get_Timer_HQ().get_time();
   float processing_time = float(current_time.get_seconds_since(time_passed));
   time_passed = current_time;
@@ -156,6 +154,54 @@ void Game_State::perform_logic() {
     partial_step(time_step, y_vel);
     partial_step(time_step, z_vel);
     
+    if (player->is_wielding_item()) {
+      if (controls.drop_item) {
+        Item* item = player->drop_item();
+        Point3f pos = Point3f(player->get_camera().position.x,
+                              player->get_camera().position.y,
+                              player->get_camera().position.z - CAMERA_HEIGHT);
+        item->set_corner(pos);
+        items.push_back(item);
+      }
+      else if (controls.use_item) {
+        if (player->can_lift()) {
+          std::cout << "CAN LIFT!\n";
+          if (player->is_lifting_terrain()) {
+            Terrain* terrain = player->drop_terrain();
+            Point3f pos = Point3f(player->get_camera().position.x,
+                                  player->get_camera().position.y,
+                                  player->get_camera().position.z - CAMERA_HEIGHT);
+            terrain->set_corner(pos);
+            terrains.push_back(terrain);
+          }
+          else {
+            for (auto it = terrains.begin(); it != terrains.end(); ++it) {
+              if ((*it)->is_portable()) {
+                std::cout << "IS PORTABLE!\n";
+                if ((*it)->get_body().intersects(player->get_body())) {
+                  std::cout << "INTERSECT!\n";
+                  player->set_terrain(*it);
+                  terrains.erase(it);
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    else {
+      if (controls.pickup_item) {
+        for (auto it = items.begin(); it != items.end(); ++it) {
+          if ((*it)->get_body().intersects(player->get_body())) {
+            player->set_item(*it);
+            items.erase(it);
+            break;
+          }
+        }
+      }
+    }
+
     /** Keep player above ground; Bookkeeping for jumping controls **/
     const Point3f &position = player->get_camera().position;
     if (position.z < 50.0f) {
@@ -191,11 +237,16 @@ void Game_State::perform_logic() {
 void Game_State::render(){
   if (done) return;
   Video &vr = get_Video();
+  
+  /** Render 3D stuff **/
   vr.set_3d(player->get_camera());
 	render_skybox(player -> get_camera());
-  for(auto cloud : clouds) cloud->render();
-  for (auto it = arrows.begin(); it != arrows.end(); ++it) (*it)->render();
-  for (auto it = terrains.begin(); it != terrains.end(); ++it) (*it)->render();
+  for (auto cloud : clouds) cloud->render();
+  for (auto arrow : arrows) arrow->render();
+  for (auto terrain : terrains) terrain->render();
+  for (auto item : items) item->render();
+  
+  /** Render 2D stuff **/
   vr.set_2d(VIDEO_DIMENSION, true);
   crosshair.render(player->is_wielding_weapon());
   vr.clear_depth_buffer();
@@ -248,15 +299,38 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
 void Game_State::load_map(const std::string &file_) {
   ifstream file(file_);
   
-  int start_x, start_y;
+  int start_x, start_y, item_count;
   if (!file.is_open()) throw new bad_exception;
   if (!(file >> dimension.height)) throw new bad_exception;
   if (!(file >> dimension.width)) throw new bad_exception;
   if (!(file >> start_y)) throw new bad_exception;
   if (!(file >> start_x)) throw new bad_exception;
+  if (!(file >> item_count)) throw new bad_exception;
+  
+  string line;
+  getline(file,line); // waste comment
+  getline(file,line); // waste a newline
+  for (int i = 0; i < item_count; ++i) {
+    char item_char;
+    if (!(file >> item_char)) throw new bad_exception;
+    
+    int z;
+    if (!(file >> z)) throw new bad_exception;
+    
+    int y;
+    if (!(file >> y)) throw new bad_exception;
+    if (y < 0 || y >= dimension.height) throw new bad_exception;
+    
+    int x;
+    if (!(file >> x)) throw new bad_exception;
+    if (x < 0 || x >= dimension.width) throw new bad_exception;
+    
+    items.push_back(
+      create_item(Map_Manager::get_Instance().get_item(item_char),
+        Point3f(UNIT_LENGTH*x, UNIT_LENGTH*y, UNIT_LENGTH*z), STANDARD_SIZE));
+  }
   
   vector< vector<int> > topology(dimension.height, vector<int>(dimension.width, 0));
-  string line;
   getline(file,line); // waste a newline
   
   /** Read topology from text file **/
@@ -272,7 +346,7 @@ void Game_State::load_map(const std::string &file_) {
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
-      std::cout << height << ' ' << width << std::endl;
+      //std::cout << height << ' ' << width << std::endl;
       /** check each terrain/item type and place them **/
       if (line[width] == '.');
       else if (Map_Manager::get_Instance().find_terrain(line[width])) {
@@ -342,7 +416,7 @@ void Game_State::load_map(const std::string &file_) {
   /** Make sure we aren't placing a player inside a terrain **/
   if (topology[start_y][start_x] > 1 && !check_concavity(topology,start_y,start_x))
     throw new bad_exception;
-  player = new Player(Camera(Point3f(UNIT_LENGTH*start_x, UNIT_LENGTH*start_y, 55.0f),
+  player = new Player(Camera(Point3f(UNIT_LENGTH*start_x, UNIT_LENGTH*start_y, CAMERA_HEIGHT),
                              Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
   
   /** Spawn cloud **/
