@@ -38,6 +38,8 @@ class Map_Manager {
   
     const Zeni::String & get_item(char c) const;
   
+    const std::string & get_common_room() const {return common_room;}
+  
     const std::string & get_next();
     
     const std::string & get_previous();
@@ -46,6 +48,7 @@ class Map_Manager {
     Map_Manager();
     
     int index;
+    std::string common_room;
     std::vector<std::string> files;
     std::map<char, std::pair<Zeni::String, Zeni::String> > combo_terrain_charmap;
     std::map<char, Zeni::String> terrain_charmap;

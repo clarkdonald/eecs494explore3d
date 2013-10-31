@@ -43,7 +43,7 @@ Play_State::Play_State()
     cerr << "No maps to play!" << endl;
     get_Game().pop_state();
   }
-  load_map(Map_Manager::get_Instance().get_next());
+  load_map(Map_Manager::get_Instance().get_common_room());
   
   Sound &sr = get_Sound();
   sr.set_BGM("music/fortunedays");
@@ -55,6 +55,8 @@ Play_State::Play_State()
 
 Play_State::~Play_State() {
   for (auto it = terrains.begin(); it != terrains.end(); ++it) delete *it;
+  for (auto it = items.begin(); it != items.end(); ++it) delete *it;
+  for (auto it = arrows.begin(); it != arrows.end(); ++it) delete *it;
   delete player;
   get_Sound().stop_BGM();
 }
@@ -133,8 +135,8 @@ void Play_State::perform_logic() {
   const Vector3f left = player->get_camera().get_left().get_ij().normalized();
   
   /** Get velocity vector split into a number of axes **/
-  const Vector3f velocity = (controls.forward - controls.back) * 50.0f * forward
-    + (controls.left - controls.right) * 50.0f * left;
+  const Vector3f velocity = (controls.forward - controls.back) * 70.0f * forward
+    + (controls.left - controls.right) * 70.0f * left;
   const Vector3f x_vel = velocity.get_i();
   const Vector3f y_vel = velocity.get_j();
   Vector3f z_vel = player->get_velocity().get_k();
@@ -275,16 +277,29 @@ void Play_State::load_map(const std::string &file_) {
       if (line[width] == '.');
       else if (Map_Manager::get_Instance().find_terrain(line[width])) {
         if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
+          if (Map_Manager::get_Instance().find_combo_terrain(line[width])) {
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), STANDARD_SIZE));
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width]), SKINNY_SIZE));
+          }
+          else {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), OBJECT_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 0.0f), SKINNY_SIZE));
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), STANDARD_SIZE));
+          }
         }
         else if (Map_Manager::get_Instance().find_combo_terrain(line[width])) {
           int i = 0;
           for (; i < topology[height][width]; ++i) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).first,
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), OBJECT_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
           }
           terrains.push_back(
             create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
@@ -294,7 +309,7 @@ void Play_State::load_map(const std::string &file_) {
           for (int i = 0; i < topology[height][width]; ++i) {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
-                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), OBJECT_SIZE));
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
           }
         }
       }
@@ -306,7 +321,8 @@ void Play_State::load_map(const std::string &file_) {
   }
   
   /** Make sure we aren't placing a player inside a terrain **/
-  if (!check_concavity(topology,start_y,start_x)) throw new bad_exception;
+  if (topology[start_y][start_x] > 1 && !check_concavity(topology,start_y,start_x))
+    throw new bad_exception;
   player = new Player(Camera(Point3f(UNIT_LENGTH*start_x, UNIT_LENGTH*start_y, 55.0f),
                       Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
   
