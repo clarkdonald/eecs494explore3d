@@ -10,6 +10,6 @@
 #define ITEM_INCLUDES_H
 
 #include "Item.h"
-#include "Potion.h"
+#include "Strength_Potion.h"
 
 #endif /* ITEM_INCLUDES_H */

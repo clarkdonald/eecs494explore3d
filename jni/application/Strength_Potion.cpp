@@ -1,17 +1,17 @@
 //
-//  Potion.cpp
+//  Strength_Potion.cpp
 //  game
 //
 //  Created by Donald Clark on 10/31/13.
 //
 //
 
-#include "Potion.h"
+#include "Strength_Potion.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
 
-Potion::Potion(const Zeni::Point3f &corner_,
+Strength_Potion::Strength_Potion(const Zeni::Point3f &corner_,
                const Zeni::Vector3f &scale_,
                const Zeni::Quaternion &rotation_)
 : Item(corner_, scale_, rotation_)
@@ -21,14 +21,14 @@ Potion::Potion(const Zeni::Point3f &corner_,
   create_body();
 }
 
-Potion::Potion(const Potion &rhs)
+Strength_Potion::Strength_Potion(const Strength_Potion &rhs)
 : Item(rhs.get_corner(), rhs.get_scale(), rhs.get_rotation())
 {
   ++instance_count;
   create_body();
 }
 
-Potion & Potion::operator=(const Potion &rhs) {
+Strength_Potion & Strength_Potion::operator=(const Strength_Potion &rhs) {
   set_corner(rhs.get_corner());
   set_scale(rhs.get_scale());
   set_rotation(rhs.get_rotation());
@@ -36,14 +36,14 @@ Potion & Potion::operator=(const Potion &rhs) {
   return *this;
 }
 
-Potion::~Potion() {
+Strength_Potion::~Strength_Potion() {
   if (!--instance_count) {
     delete model;
     model = 0lu;
   }
 }
 
-void Potion::render() {
+void Strength_Potion::render() {
   const std::pair<Vector3f, float> cur_rotation = get_rotation().get_rotation();
   model->set_translate(get_corner());
   model->set_scale(get_scale());
@@ -51,9 +51,9 @@ void Potion::render() {
   model->render();
 }
 
-bool Potion::for_lifting() const {
+bool Strength_Potion::for_lifting() const {
   return true;
 }
 
-Model * Potion::model = 0;
-unsigned long Potion::instance_count = 0lu;
+Model * Strength_Potion::model = 0;
+unsigned long Strength_Potion::instance_count = 0lu;

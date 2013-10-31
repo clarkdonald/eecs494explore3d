@@ -17,6 +17,6 @@ Item * create_item(const String &type_,
                    const Vector3f &scale_,
                    const Quaternion &rotation_)
 {
-  if (type_ == "Potion") return new Potion(corner_, scale_, rotation_);
+  if (type_ == "Strength") return new Strength_Potion(corner_, scale_, rotation_);
   else throw new std::bad_alloc;
 }

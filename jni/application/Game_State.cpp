@@ -296,25 +296,27 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
   player->step(time_step);
   
   /** If collision with terrain has occurred, roll things back **/
-  for (auto it = terrains.begin(); it != terrains.end(); ++it) {
-    if ((*it)->get_body().intersects(player->get_body())) {
-      if ((*it)->is_portal()) done = true;
-      
-      if (moved) {
-        /** Play a sound if possible **/
-        (*it)->collide();
-        moved = false;
+  if (!player->can_walk_through_terrain()) {
+    for (auto it = terrains.begin(); it != terrains.end(); ++it) {
+      if ((*it)->get_body().intersects(player->get_body())) {
+        if ((*it)->is_portal()) done = true;
+        
+        if (moved) {
+          /** Play a sound if possible **/
+          (*it)->collide();
+          moved = false;
+        }
+        
+        player->set_position(backup_position);
+        
+        /** Bookkeeping for jumping controls **/
+        if (velocity.k < 0.0f) player->set_on_ground(true);
       }
-      
-      player->set_position(backup_position);
-      
-      /** Bookkeeping for jumping controls **/
-      if (velocity.k < 0.0f) player->set_on_ground(true);
     }
   }
   
   //collision between mosnter and player 
-  for(auto monster : monsters)
+  for (auto monster : monsters)
   {
 	  if(monster -> get_body().intersects(player->get_body()))
 	  {
@@ -352,7 +354,9 @@ void Game_State::load_map(const std::string &file_) {
   if (!(file >> dimension.height)) throw new bad_exception;
   if (!(file >> dimension.width)) throw new bad_exception;
   if (!(file >> start_y)) throw new bad_exception;
+  if (start_y < 0 || start_y >= dimension.height) throw new bad_exception;
   if (!(file >> start_x)) throw new bad_exception;
+  if (start_x < 0 || start_x >= dimension.width) throw new bad_exception;
   if (!(file >> item_count)) throw new bad_exception;
   
   string line;
@@ -375,7 +379,7 @@ void Game_State::load_map(const std::string &file_) {
     
     items.push_back(
       create_item(Map_Manager::get_Instance().get_item(item_char),
-        Point3f(UNIT_LENGTH*x, UNIT_LENGTH*y, UNIT_LENGTH*z), STANDARD_SIZE));
+        Point3f(UNIT_LENGTH*x, UNIT_LENGTH*y, UNIT_LENGTH*z), ITEM_SIZE));
   }
   
   vector< vector<int> > topology(dimension.height, vector<int>(dimension.width, 0));

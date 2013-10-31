@@ -20,15 +20,15 @@ class Monster : public Game_Object {
             const Zeni::Vector3f &scale_ = Zeni::Vector3f(1.0f, 1.0f, 1.0f),
             const Zeni::Quaternion &rotation_ = Zeni::Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f));
 
-	void update(const float& time_step) = 0;
-	void take_damage(int damage);
-	bool is_dead() { return health <= 0; }
+    void update(const float& time_step) = 0;
+    void take_damage(int damage);
+    bool is_dead() { return health <= 0; }
 
-	int get_damage() {return damage;}
+    int get_damage() {return damage;}
 
-private:
-	int health;
-	int damage;
+  private:
+    int health;
+    int damage;
 };
 
 #endif /* TERRAIN_H */
