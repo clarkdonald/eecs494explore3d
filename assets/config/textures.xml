@@ -79,5 +79,21 @@
     <filepath>textures/blue.png</filepath>
     <tile>1</tile>
   </BLUE.PNG>
+  <YELLOW.PNG>
+    <filepath>textures/yellow.png</filepath>
+    <tile>1</tile>
+  </YELLOW.PNG>
+  <WHITE.PNG>
+    <filepath>textures/white.png</filepath>
+    <tile>1</tile>
+  </WHITE.PNG>
+  <RED.PNG>
+    <filepath>textures/red.png</filepath>
+    <tile>1</tile>
+  </RED.PNG>
+  <GREEN.PNG>
+    <filepath>textures/green.png</filepath>
+    <tile>1</tile>
+  </GREEN.PNG>
   
 </Textures>
