@@ -13,9 +13,11 @@
 #include <Zeni/Coordinate.h>
 
 const float UNIT_LENGTH = 40.0f;
-const float CAMERA_HEIGHT = 55.0f;
+const float CAMERA_HEIGHT = 50.0f;
+const float SKINNY_HEIGHT = 5.0f;
 const Zeni::Vector3f STANDARD_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,UNIT_LENGTH);
-const Zeni::Vector3f SKINNY_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,5.0f);
+const Zeni::Vector3f MEDIUM_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,UNIT_LENGTH-SKINNY_HEIGHT);
+const Zeni::Vector3f SKINNY_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,SKINNY_HEIGHT);
 const std::pair<Zeni::Point2f, Zeni::Point2f> VIDEO_DIMENSION =
   std::make_pair(Zeni::Point2f(0.0f, 0.0f), Zeni::Point2f(854.0f, 480.0f));
 

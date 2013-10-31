@@ -43,7 +43,10 @@ Player::Player(const Camera &camera_,
   create_body();
 }
 
-Player::~Player() {}
+Player::~Player() {
+  if (terrain != nullptr) delete terrain;
+  if (item != nullptr) delete item;
+}
 
 void Player::set_position(const Point3f &position) {
   camera.position = position;
