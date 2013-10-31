@@ -238,7 +238,8 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
 
 void Play_State::load_map(const std::string &file_) {
   ifstream file(file_);
-  
+ 
+
   if (!file.is_open()) throw new bad_exception();
   
   if (!(file >> dimension.height)) throw new bad_exception;
