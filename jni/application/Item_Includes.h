@@ -10,5 +10,6 @@
 #define ITEM_INCLUDES_H
 
 #include "Item.h"
+#include "Potion.h"
 
 #endif /* ITEM_INCLUDES_H */

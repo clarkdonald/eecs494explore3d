@@ -9,28 +9,42 @@
 #include "Player.h"
 #include "Game_Object.h"
 #include "Arrow.h"
+#include "Item.h"
+#include "Terrain.h"
 
 using namespace Zeni;
 using namespace Zeni::Collision;
+using std::bad_exception;
+
+Player::Abilities::Abilities()
+: lift(false)
+{}
+
+void Player::Abilities::clear() {
+  lift = false;
+}
+
+void Player::Abilities::set(const Item *item_) {
+  lift = item_->for_pushing();
+}
 
 Player::Player(const Camera &camera_,
                const Vector3f &end_point_b_,
                const float radius_)
 : camera(camera_),
-  source(new Sound_Source(get_Sounds()["gunshot"])),
   end_point_b(end_point_b_),
   radius(radius_),
   on_ground(false),
-  wielding_weapon(false)
+  wielding_weapon(false),
+  item(nullptr),
+  terrain(nullptr)
 {
   camera.fov_rad = Zeni::Global::pi / 3.0f;
   health = 5;
   create_body();
 }
 
-Player::~Player() {
-  delete source;
-}
+Player::~Player() {}
 
 void Player::set_position(const Point3f &position) {
   camera.position = position;
@@ -80,10 +94,32 @@ void Player::create_body() {
   sr.set_listener_velocity(velocity);
 }
 
+const bool & Player::can_lift() const {
+  return abilities.lift;
+}
+
+Item * Player::drop_item() {
+  if (!is_wielding_item()) throw new bad_exception;
+  abilities.clear();
+  Item *ret = item;
+  item = nullptr;
+  return ret;
+}
+
+void Player::set_item(Item *item_) {
+  item = item_;
+  abilities.set(item);
+}
+
+Terrain * Player::drop_terrain() {
+  if (!is_lifting_terrain()) throw new bad_exception;
+  Terrain *ret = terrain;
+  terrain = nullptr;
+  return ret;
+}
+
 // TODO: need to be able to center the bullets when they get fired
 Arrow * Player::fire(const float& bow_power) {
-//  source->set_position(camera.position);
-//  if (!source->is_playing()) source->play();
 	wielding_weapon = true;
     return new Arrow(camera.position + Vector3f(18.0, 18.0, 3.0),
                    camera.get_forward(),

@@ -13,6 +13,8 @@
 #include <vector>
 
 class Arrow;
+class Item;
+class Terrain;
 
 class Player {
   public:
@@ -41,21 +43,40 @@ class Player {
   
 	void jump();
     void step(const float &time_step);
-	void update_arrows(const float& time_step);
 	void take_damage(int damage) {health -= damage;};
 
 	bool is_dead() { return health <= 0;}
 	
+
+    // functions related to items
+    bool is_wielding_item() const {return item != nullptr;}
+    Item * drop_item();
+    void set_item(Item *item_);
+  
+    // functions related to abilities from items
+    const bool & can_lift() const;
+  
+    // functions related to terrains
+    bool is_lifting_terrain() const {return terrain != nullptr;}
+    Terrain * drop_terrain();
+    void set_terrain(Terrain *terrain_) {terrain = terrain_;}
+  
     //functions related to arrows
     Arrow * fire(const float& bow_power);
     
   private:
+    struct Abilities {
+      Abilities();
+      void clear();
+      void set(const Item *item_);
+      bool lift;
+    } abilities;
+  
     void create_body();
     
     // Level 1/2
     Zeni::Camera camera;
-    Zeni::Sound_Source * source;
-    
+  
     // Level 2
     Zeni::Vector3f end_point_b;
   
@@ -68,6 +89,9 @@ class Player {
     bool on_ground; 
     bool wielding_weapon;
 	int health;
+
+	Item* item;
+    Terrain* terrain;
 };
 
 #endif /* PLAYER_H */

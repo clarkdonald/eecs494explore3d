@@ -27,9 +27,9 @@ bool Item::for_pushing() const {
 }
 
 bool Item::for_extinguishing() const {
-  return true;
+  return false;
 }
 
 bool Item::for_water_filling() const {
-  return true;
+  return false;
 }

@@ -6,7 +6,9 @@
 
 class Arrow : public Game_Object {
   public:
-    Arrow(const Zeni::Point3f &corner_, const Zeni::Vector3f& forward_, const float& power);
+    Arrow(const Zeni::Point3f &corner_,
+          const Zeni::Vector3f& forward_,
+          const float& power);
 
     void render() override;
 	const Zeni::Collision::Sphere& get_body() const { return body; }
@@ -18,7 +20,6 @@ protected:
 	void create_body() override;
 
 private:
-    
     Zeni::Vector3f forward;
     float power;
     static Zeni::Model* model;

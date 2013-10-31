@@ -2,6 +2,9 @@
 85
 49
 60
+1
+# items
+p 0 45 55
 # topology
 0000000000000000000000000000000000000000000007777777777777777777777777777777777777777
 0000000000000000000000000000000000000000000007777777777777777777777777777777777777777
@@ -66,6 +69,7 @@
 .............................................ssssssssssssssssssssssssssssssssssssssss
 .............................................ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
+.......................ggggggggggggggggg.....ssssssssssssCssssssssssssssCssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
@@ -73,8 +77,7 @@
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
-.......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
-.......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
+.......................ggggggggggggggggg.....ssssssssssssCssssssspssssssCssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss
 .......................ggggggggggggggggg.....ssssssssssssssssssssssssssssssssssssssss

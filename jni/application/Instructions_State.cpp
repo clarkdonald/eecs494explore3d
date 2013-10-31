@@ -17,7 +17,7 @@ Instructions_State::Instructions_State()
      Point2f(800.0f, 600.0f),
      "system_36_800x600",
      "P U R P O S E\n"
-     "You must get to safety by getting to your vehicle. "
+     "You must get to safety by getting to a magic portal. "
      "You do this by clearing obstacles in the map you are thrown in, while "
      "shooting off or dodging away from ghosts.\n\n"
      "C O N T R O L S\n"
