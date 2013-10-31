@@ -22,7 +22,7 @@ bool Item::for_cutting() const {
   return false;
 }
 
-bool Item::for_pushing() const {
+bool Item::for_lifting() const {
   return false;
 }
 

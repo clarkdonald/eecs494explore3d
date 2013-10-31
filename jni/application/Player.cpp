@@ -25,7 +25,7 @@ void Player::Abilities::clear() {
 }
 
 void Player::Abilities::set(const Item *item_) {
-  lift = item_->for_pushing();
+  lift = item_->for_lifting();
 }
 
 Player::Player(const Camera &camera_,

@@ -26,7 +26,7 @@ class Potion : public Item {
     
     virtual void render() override;
   
-    bool for_pushing() const override;
+    bool for_lifting() const override;
   
   private:
     static Zeni::Model * model;
