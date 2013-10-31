@@ -47,8 +47,8 @@ class Player {
 	  bool is_dead() { return health <= 0;}
 
     // functions related to items
-    bool is_wielding_item() const {return item != nullptr;}
-    Item * drop_item();
+    //bool is_wielding_item() const {return item != nullptr;}
+    //Item * drop_item();
     void set_item(Item *item_);
   
     // functions related to abilities from items
@@ -93,7 +93,7 @@ class Player {
     bool wielding_weapon;
 	  int health;
 
-	  Item* item;
+	  //Item* item;
     Terrain* terrain;
 };
 

@@ -25,10 +25,10 @@ void Player::Abilities::clear() {
 }
 
 void Player::Abilities::set(const Item *item_) {
-  lift = item_->for_lifting();
-  jump = item_->for_jumping();
-  ghost = item_->for_ghost();
-  water = item_->for_fire();
+  if (!lift) lift = item_->for_lifting();
+  if (!jump) jump = item_->for_jumping();
+  if (!ghost) ghost = item_->for_ghost();
+  if (!water) water = item_->for_fire();
 }
 
 Player::Player(const Camera &camera_,
@@ -39,7 +39,7 @@ Player::Player(const Camera &camera_,
   radius(radius_),
   on_ground(false),
   wielding_weapon(false),
-  item(nullptr),
+  //item(nullptr),
   terrain(nullptr)
 {
   camera.fov_rad = Zeni::Global::pi / 3.0f;
@@ -49,7 +49,7 @@ Player::Player(const Camera &camera_,
 
 Player::~Player() {
   if (terrain != nullptr) delete terrain;
-  if (item != nullptr) delete item;
+  //if (item != nullptr) delete item;
 }
 
 void Player::set_position(const Point3f &position) {
@@ -101,17 +101,16 @@ void Player::create_body() {
   sr.set_listener_velocity(velocity);
 }
 
-Item * Player::drop_item() {
-  if (!is_wielding_item()) throw new bad_exception;
-  abilities.clear();
-  Item *ret = item;
-  item = nullptr;
-  return ret;
-}
+//Item * Player::drop_item() {
+//  if (!is_wielding_item()) throw new bad_exception;
+//  abilities.clear();
+//  Item *ret = item;
+//  item = nullptr;
+//  return ret;
+//}
 
 void Player::set_item(Item *item_) {
-  item = item_;
-  abilities.set(item);
+  abilities.set(item_);
 }
 
 Terrain * Player::drop_terrain() {

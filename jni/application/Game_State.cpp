@@ -168,54 +168,51 @@ void Game_State::perform_logic() {
   }
   
   /** Logic for items **/
-  if (player->is_wielding_item()) {
-    if (controls.drop_item) {
-      Item* item = player->drop_item();
-      Point3f pos = Point3f(player->get_camera().position.x,
-                            player->get_camera().position.y,
-                            player->get_camera().position.z - CAMERA_HEIGHT);
-      item->set_corner(pos);
-      items.push_back(item);
-    }
-    else if (controls.use_item) {
-      if (!use_timer.is_running()) {
-        if (player->can_lift()) {
-          if (player->is_lifting_terrain()) {
-            Terrain* terrain = player->drop_terrain();
-            Point3f pos = Point3f(player->get_camera().position.x,
-                                  player->get_camera().position.y,
-                                  player->get_camera().position.z - CAMERA_HEIGHT + 5.0f);
-            terrain->set_corner(pos);
-            terrains.push_back(terrain);
-          }
-          else {
-            for (auto it = terrains.begin(); it != terrains.end(); ++it) {
-              if ((*it)->is_portable()) {
-                if ((*it)->get_body().intersects(player->get_body())) {
-                  player->set_terrain(*it);
-                  terrains.erase(it);
-                  break;
-                }
+//    if (controls.drop_item) {
+//      Item* item = player->drop_item();
+//      Point3f pos = Point3f(player->get_camera().position.x,
+//                            player->get_camera().position.y,
+//                            player->get_camera().position.z - CAMERA_HEIGHT);
+//      item->set_corner(pos);
+//      items.push_back(item);
+//    }
+  if (controls.use_item) {
+    if (!use_timer.is_running()) {
+      if (player->can_lift()) {
+        if (player->is_lifting_terrain()) {
+          Terrain* terrain = player->drop_terrain();
+          Point3f pos = Point3f(player->get_camera().position.x,
+                                player->get_camera().position.y,
+                                player->get_camera().position.z - CAMERA_HEIGHT + 5.0f);
+          terrain->set_corner(pos);
+          terrains.push_back(terrain);
+        }
+        else {
+          for (auto it = terrains.begin(); it != terrains.end(); ++it) {
+            if ((*it)->is_portable()) {
+              if ((*it)->get_body().intersects(player->get_body())) {
+                player->set_terrain(*it);
+                terrains.erase(it);
+                break;
               }
             }
           }
         }
-        use_timer.reset();
-        use_timer.start();
       }
-      else {
-        if (use_timer.seconds() > 0.3f) use_timer.stop();
-      }
+      use_timer.reset();
+      use_timer.start();
+    }
+    else {
+      if (use_timer.seconds() > 0.3f) use_timer.stop();
     }
   }
-  else {
-    if (controls.pickup_item) {
-      for (auto it = items.begin(); it != items.end(); ++it) {
-        if ((*it)->get_body().intersects(player->get_body())) {
-          player->set_item(*it);
-          items.erase(it);
-          break;
-        }
+  if (controls.pickup_item) {
+    for (auto it = items.begin(); it != items.end(); ++it) {
+      if ((*it)->get_body().intersects(player->get_body())) {
+        player->set_item(*it);
+        delete *it;
+        items.erase(it);
+        break;
       }
     }
   }
