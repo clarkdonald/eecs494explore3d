@@ -34,6 +34,10 @@ class Map_Manager {
   
     const std::pair<Zeni::String, Zeni::String> & get_combo_terrain(char c) const;
   
+    bool find_placement_terrain(char c) const;
+  
+    const std::pair<Zeni::String, Zeni::String> & get_placement_terrain(char c) const;
+  
     bool find_item(char c) const;
   
     const Zeni::String & get_item(char c) const;
@@ -50,6 +54,7 @@ class Map_Manager {
     int index;
     std::string common_room;
     std::vector<std::string> files;
+    std::map<char, std::pair<Zeni::String, Zeni::String> > placement_terrain_charmap;
     std::map<char, std::pair<Zeni::String, Zeni::String> > combo_terrain_charmap;
     std::map<char, Zeni::String> terrain_charmap;
     std::map<char, Zeni::String> item_charmap;

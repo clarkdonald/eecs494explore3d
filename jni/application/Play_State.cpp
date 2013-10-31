@@ -38,12 +38,11 @@ Play_State::Play_State()
 : player(nullptr)
 {
   set_pausable(true);
-  if (Map_Manager::get_Instance().empty()) {
-    cerr << "No maps to play!" << endl;
-    get_Game().pop_state();
-  }
+  
+  /** load common room **/
   load_map(Map_Manager::get_Instance().get_common_room());
   
+  /** load BGM **/
   Sound &sr = get_Sound();
   sr.set_BGM("music/fortunedays");
   sr.set_BGM_looping(true);
@@ -278,6 +277,14 @@ void Play_State::load_map(const std::string &file_) {
               create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
                 Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width]), SKINNY_SIZE));
           }
+          else if (Map_Manager::get_Instance().find_placement_terrain(line[width])) {
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).first,
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), STANDARD_SIZE));
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).second,
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*topology[height][width]), STANDARD_SIZE));
+          }
           else {
             terrains.push_back(
               create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
@@ -297,6 +304,17 @@ void Play_State::load_map(const std::string &file_) {
           terrains.push_back(
             create_terrain(Map_Manager::get_Instance().get_combo_terrain(line[width]).second,
               Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), SKINNY_SIZE));
+        }
+        else if (Map_Manager::get_Instance().find_placement_terrain(line[width])) {
+          int i = 0;
+          for (; i < topology[height][width]; ++i) {
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).first,
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
+          }
+          terrains.push_back(
+            create_terrain(Map_Manager::get_Instance().get_placement_terrain(line[width]).second,
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), STANDARD_SIZE));
         }
         else {
           for (int i = 0; i < topology[height][width]; ++i) {

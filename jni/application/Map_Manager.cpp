@@ -36,6 +36,9 @@ Map_Manager::Map_Manager()
   /** load the character mapping for combo terrains **/
   combo_terrain_charmap['g'] = make_pair("Dirt", "Grass");
   
+  /** load the character mapping for placement terrains **/
+  placement_terrain_charmap['C'] = make_pair("Stone", "Crate");
+  
   /** load the character mapping for terrains **/
   terrain_charmap['c'] = "Concrete";
   terrain_charmap['g'] = "Grass";
@@ -81,6 +84,17 @@ bool Map_Manager::find_combo_terrain(char c) const {
 const std::pair<String, String> & Map_Manager::get_combo_terrain(char c) const {
   map<char, pair<String, String> >::const_iterator it;
   if ((it = combo_terrain_charmap.find(c)) == combo_terrain_charmap.end())
+    throw new bad_exception;
+  return it->second;
+}
+
+bool Map_Manager::find_placement_terrain(char c) const {
+  return placement_terrain_charmap.find(c) != placement_terrain_charmap.end();
+}
+
+const pair<String, String> & Map_Manager::get_placement_terrain(char c) const {
+  map<char, pair<String, String> >::const_iterator it;
+  if ((it = placement_terrain_charmap.find(c)) == placement_terrain_charmap.end())
     throw new bad_exception;
   return it->second;
 }
