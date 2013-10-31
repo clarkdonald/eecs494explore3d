@@ -11,12 +11,13 @@
 using namespace Zeni;
 using namespace Zeni::Collision;
 
-Ground::Ground(const Point3f &corner_,
+Ground::Ground(const Zeni::String &model_,
+               const Point3f &corner_,
                const Vector3f &scale_,
                const Quaternion &rotation_)
 : Terrain(corner_, scale_, rotation_)
 {
-  if (!instance_count) model = new Model("models/ground.3ds");
+  if (!instance_count) model = new Model(model_);
   ++instance_count;
   create_body();
 }

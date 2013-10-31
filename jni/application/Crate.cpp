@@ -14,11 +14,9 @@ using namespace Zeni::Collision;
 Crate::Crate(const Point3f &corner_,
              const Vector3f &scale_,
              const Quaternion &rotation_)
-: Terrain(corner_,
-          scale_,
-          rotation_)
+: Terrain(corner_, scale_, rotation_)
 {
-  if (!instance_count) model = new Model("models/concrete_block.3ds");
+  if (!instance_count) model = new Model("models/crate.3ds");
   ++instance_count;
   create_body();
 }

@@ -10,6 +10,7 @@
 #define TERRAIN_INCLUDES_H
 
 #include "Terrain.h"
+#include "Solid_Terrain.h"
 #include "Crate.h"
 #include "Ground.h"
 

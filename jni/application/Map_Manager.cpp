@@ -15,6 +15,7 @@ using std::string;
 using std::cerr;
 using std::endl;
 using std::bad_exception;
+using std::map;
 
 Map_Manager& Map_Manager::get_Instance()
 {
@@ -29,6 +30,17 @@ Map_Manager::Map_Manager()
     string str = "../assets/maps/level" + std::to_string(i) + ".txt";
     files.push_back(str);
   }
+  
+  /** load the character mapping for terrains **/
+  terrain_charmap['c'] = "Concrete";
+  terrain_charmap['g'] = "Grass";
+  terrain_charmap['s'] = "Stone";
+  terrain_charmap['G'] = "Ground";
+  terrain_charmap['C'] = "Crate";
+
+  /** load the character mapping for items **/
+  item_charmap['b'] = "Bullet";
+  item_charmap['p'] = "Potion";
 }
 
 const int & Map_Manager::get_files_left() const {
@@ -41,6 +53,28 @@ bool Map_Manager::empty() const {
 
 void Map_Manager::reset() {
   index = 0;
+}
+
+bool Map_Manager::find_terrain(char c) const {
+  return terrain_charmap.find(c) != terrain_charmap.end();
+}
+
+const Zeni::String & Map_Manager::get_terrain(char c) const {
+  map<char, Zeni::String>::const_iterator it;
+  if ((it = terrain_charmap.find(c)) == terrain_charmap.end())
+    throw new bad_exception;
+  return it->second;
+}
+
+bool Map_Manager::find_item(char c) const {
+  return item_charmap.find(c) != item_charmap.end();
+}
+
+const Zeni::String & Map_Manager::get_item(char c) const {
+  map<char, Zeni::String>::const_iterator it;
+  if ((it = item_charmap.find(c)) == item_charmap.end())
+    throw new bad_exception;
+  return it->second;
 }
 
 const std::string & Map_Manager::get_next() {
