@@ -65,8 +65,7 @@ Solid_Terrain::Model_Manager::Model_Manager() {}
 
 Solid_Terrain::Model_Manager::~Model_Manager() {
   for (auto it = model_map.begin(); it != model_map.end(); ++it)
-    if (it->second.second)
-      delete it->second.first;
+    delete it->second.first;
 }
 
 bool Solid_Terrain::Model_Manager::find_model(const String &model_) const {
@@ -93,7 +92,7 @@ const unsigned long & Solid_Terrain::Model_Manager::get_instance_count(const Str
 void Solid_Terrain::Model_Manager::decrement_instance_count(const String &model_) {
   map<String, pair<Model*, unsigned long> >::iterator it;
   if ((it = model_map.find(model_)) == model_map.end()) throw new bad_exception;
-  if (--it->second.second) {
+  if (!--it->second.second) {
     delete it->second.first;
     model_map.erase(it);
   }

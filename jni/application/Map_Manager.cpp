@@ -26,7 +26,7 @@ Map_Manager& Map_Manager::get_Instance()
 }
 
 Map_Manager::Map_Manager()
-: index(0)
+: index(0), common_room("../assets/maps/common.txt")
 {
   for (int i = 0; i < NUM_FILES; ++i) {
     string str = "../assets/maps/level" + std::to_string(i) + ".txt";
