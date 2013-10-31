@@ -52,6 +52,11 @@
     <tile>1</tile>
   </SAND_TEX.PNG>
 
+  <RED_BULL.PNG>
+    <filepath>textures/red_bullet.png</filepath>
+    <tile>1</tile>
+  </RED_BULL.PNG>
+
   <sky>
     <filepath>textures/sky.png</filepath>
     <tile>1</tile>

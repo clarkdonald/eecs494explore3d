@@ -15,6 +15,7 @@
 #include "Utility.h"
 #include "Skybox.h"
 #include "Map_Manager.h"
+#include "Cloud.h"
 #include <utility>
 #include <fstream>
 #include <map>
@@ -47,6 +48,8 @@ Play_State::Play_State()
   sr.set_BGM("music/fortunedays");
   sr.set_BGM_looping(true);
   sr.play_BGM();
+
+  clouds.push_back(new Cloud(Point3f(0.0f, 0.0f, 0.0f), 0));
 }
 
 Play_State::~Play_State() {
@@ -122,6 +125,9 @@ void Play_State::perform_logic() {
   float processing_time = float(current_time.get_seconds_since(time_passed));
   time_passed = current_time;
   float time_step = processing_time;
+
+  //move the clouds
+  for(auto cloud : clouds) cloud -> update(time_step);
   
   /** Get forward and left vectors in the XY-plane **/
   const Vector3f forward = player->get_camera().get_forward().get_ij().normalized();
@@ -188,6 +194,7 @@ void Play_State::render(){
   Video &vr = get_Video();
   vr.set_3d(player->get_camera());
 	render_skybox(player -> get_camera());
+  for(auto cloud : clouds) cloud -> render();
   for (auto it = arrows.begin(); it != arrows.end(); ++it) (*it)->render();
   for (auto it = terrains.begin(); it != terrains.end(); ++it) (*it)->render();
   vr.set_2d(VIDEO_DIMENSION, true);
