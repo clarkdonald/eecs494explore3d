@@ -16,6 +16,8 @@ using std::cerr;
 using std::endl;
 using std::bad_exception;
 using std::map;
+using std::make_pair;
+using std::pair;
 
 Map_Manager& Map_Manager::get_Instance()
 {
@@ -30,6 +32,9 @@ Map_Manager::Map_Manager()
     string str = "../assets/maps/level" + std::to_string(i) + ".txt";
     files.push_back(str);
   }
+  
+  /** load the character mapping for special terrains **/
+  special_terrain_charmap['g'] = make_pair("Ground", "Grass");
   
   /** load the character mapping for terrains **/
   terrain_charmap['c'] = "Concrete";
@@ -59,9 +64,20 @@ bool Map_Manager::find_terrain(char c) const {
   return terrain_charmap.find(c) != terrain_charmap.end();
 }
 
-const Zeni::String & Map_Manager::get_terrain(char c) const {
-  map<char, Zeni::String>::const_iterator it;
+const String & Map_Manager::get_terrain(char c) const {
+  map<char, String>::const_iterator it;
   if ((it = terrain_charmap.find(c)) == terrain_charmap.end())
+    throw new bad_exception;
+  return it->second;
+}
+
+bool Map_Manager::find_special_terrain(char c) const {
+  return special_terrain_charmap.find(c) != special_terrain_charmap.end();
+}
+
+const std::pair<String, String> & Map_Manager::get_special_terrain(char c) const {
+  map<char, pair<String, String> >::const_iterator it;
+  if ((it = special_terrain_charmap.find(c)) == special_terrain_charmap.end())
     throw new bad_exception;
   return it->second;
 }
@@ -70,8 +86,8 @@ bool Map_Manager::find_item(char c) const {
   return item_charmap.find(c) != item_charmap.end();
 }
 
-const Zeni::String & Map_Manager::get_item(char c) const {
-  map<char, Zeni::String>::const_iterator it;
+const String & Map_Manager::get_item(char c) const {
+  map<char, String>::const_iterator it;
   if ((it = item_charmap.find(c)) == item_charmap.end())
     throw new bad_exception;
   return it->second;

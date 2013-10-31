@@ -201,7 +201,6 @@ void Play_State::partial_step(const float &time_step, const Vector3f &velocity) 
   player->step(time_step);
   
   /** If collision with the crate has occurred, roll things back **/
-
   for (auto it = terrains.begin(); it != terrains.end(); ++it) {
     if ((*it)->get_body().intersects(player->get_body())) {
       if (moved) {
@@ -264,13 +263,24 @@ void Play_State::load_map(const std::string &file_) {
   for (int height = 0; getline(file,line) && height < dimension.height;) {
     if (line.find('#') != std::string::npos) continue;
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
-      // check each terrain/item type and place them
+      /** check each terrain/item type and place them **/
       if (line[width] == '.');
       else if (Map_Manager::get_Instance().find_terrain(line[width])) {
         if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), OBJECT_SIZE));
+        }
+        else if (Map_Manager::get_Instance().find_special_terrain(line[width])) {
+          int i = 0;
+          for (; i < topology[height][width]; ++i) {
+            terrains.push_back(
+              create_terrain(Map_Manager::get_Instance().get_special_terrain(line[width]).first,
+                Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), OBJECT_SIZE));
+          }
           terrains.push_back(
-            create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
-              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), OBJECT_SIZE));
+            create_terrain(Map_Manager::get_Instance().get_special_terrain(line[width]).second,
+              Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), SKINNY_SIZE));
         }
         else {
           for (int i = 0; i < topology[height][width]; ++i) {
