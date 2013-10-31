@@ -243,8 +243,7 @@ void Game_State::perform_logic() {
 		bow_power = 0.0f;
   }
   
-  // TODO: we need to delete arrows when they collide or disappear the world.
-  // maybe collision with terrains or skybox
+  // Code to update arrows
   for (auto it = arrows.begin(); it != arrows.end();) {
 	bool is_done = false;
 	for(auto monster : monsters)
@@ -255,6 +254,9 @@ void Game_State::perform_logic() {
 			is_done = true;
 		}
 	}
+
+	if((*it) -> get_distance_traveled() > 4000.0f)
+		is_done = true;
 
 	if (is_done) {
       delete *it;

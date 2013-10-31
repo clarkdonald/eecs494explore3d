@@ -10,7 +10,7 @@ Arrow::Arrow(const Point3f &corner_,
               Vector3f(0.5f, 0.5f, 0.5f),
               Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), 0.0f),
               nullptr),
-    forward(forward_), power(power_)
+    forward(forward_), power(power_), distance_traveled(0.0f)
 {
 	if (!instance_count) model = new Model("models/sphere.3DS");
 	++instance_count;
@@ -36,6 +36,7 @@ void Arrow::render() {
 void Arrow::update(const float& time_step) 
 {
 	set_corner(get_corner() + time_step * 800 * forward);
+	distance_traveled += forward.magnitude() * 800 * time_step;
 	create_body();
 }
 

@@ -14,6 +14,8 @@ class Arrow : public Game_Object {
 	const Zeni::Collision::Sphere& get_body() const { return body; }
     void update(const float& time_step) override;
 
+	float get_distance_traveled() {return distance_traveled;}
+
     ~Arrow();
 
 protected:
@@ -22,6 +24,7 @@ protected:
 private:
     Zeni::Vector3f forward;
     float power;
+	float distance_traveled;
     static Zeni::Model* model;
     static unsigned long instance_count;
 
