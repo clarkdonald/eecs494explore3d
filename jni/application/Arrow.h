@@ -6,7 +6,9 @@
 
 class Arrow : public Game_Object {
   public:
-    Arrow(const Zeni::Point3f &corner_, const Zeni::Vector3f& forward_, const float& power);
+    Arrow(const Zeni::Point3f &corner_,
+          const Zeni::Vector3f& forward_,
+          const float& power);
 
     bool is_done() {return current_state == DISSAPEAR;}
 
@@ -17,10 +19,8 @@ class Arrow : public Game_Object {
     ~Arrow();
   private:
 
-    enum Arrow_State
-      { IN_MOTION, HIT_OBJECT, DISSAPEAR };
+    enum Arrow_State { IN_MOTION, HIT_OBJECT, DISSAPEAR } current_state;
     
-    Arrow_State current_state;
     Zeni::Vector3f forward;
     float power;
     static Zeni::Model* model;

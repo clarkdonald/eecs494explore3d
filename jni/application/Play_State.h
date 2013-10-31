@@ -10,16 +10,8 @@
 #define PLAY_STATE_H
 
 #include "Player.h"
-#include "Crosshair.h"
-#include "Skybox.h"
-#include "Utility.h"
-#include <zenilib.h>
-#include <string>
 
-class Terrain;
-class Item;
-class Arrow;
-class Cloud;
+class Game_State;
 
 class Play_State : public Zeni::Gamestate_Base {
   public:
@@ -41,22 +33,8 @@ class Play_State : public Zeni::Gamestate_Base {
     
     void render();
     
-  private:
-    void partial_step(const float &time_step, const Zeni::Vector3f &velocity);
-  
-    void load_map(const std::string &file_);
-  
-    Zeni::Time_HQ time_passed;
-    Controls controls;
-    std::list<Item*> items;
-    std::list<Terrain*> terrains;
-    std::list<Arrow*> arrows;
-	std::list<Cloud*> clouds;
-    Player* player;
-    Crosshair crosshair;
-	  float bow_power;
-    bool moved;
-    Dimension dimension;
+  private:  
+    Game_State *game_state;
 };
 
 #endif /* PLAY_STATE_H */

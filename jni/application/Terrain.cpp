@@ -18,6 +18,10 @@ Terrain::Terrain(const Point3f &corner_,
 
 Terrain::~Terrain() {}
 
+bool Terrain::is_portal() const {
+  return false;
+}
+
 bool Terrain::is_cuttable() const {
   return false;
 }

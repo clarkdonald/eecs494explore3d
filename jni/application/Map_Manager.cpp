@@ -38,6 +38,7 @@ Map_Manager::Map_Manager()
   
   /** load the character mapping for placement terrains **/
   placement_terrain_charmap['C'] = make_pair("Stone", "Crate");
+  placement_terrain_charmap['p'] = make_pair("Stone", "Portal");
   
   /** load the character mapping for terrains **/
   terrain_charmap['c'] = "Concrete";
@@ -48,6 +49,7 @@ Map_Manager::Map_Manager()
   terrain_charmap['y'] = "Cloud";
   terrain_charmap['w'] = "Water";
   terrain_charmap['C'] = "Crate";
+  terrain_charmap['p'] = "Portal";
 
   /** load the character mapping for items **/
   item_charmap['b'] = "Bullet";

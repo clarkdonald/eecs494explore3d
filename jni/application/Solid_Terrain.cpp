@@ -41,6 +41,7 @@ Solid_Terrain::Solid_Terrain(const Solid_Terrain &rhs)
 }
 
 Solid_Terrain & Solid_Terrain::operator=(const Solid_Terrain &rhs) {
+  if (model != rhs.get_model()) throw new bad_exception;
   set_corner(rhs.get_corner());
   set_scale(rhs.get_scale());
   set_rotation(rhs.get_rotation());
@@ -64,8 +65,10 @@ void Solid_Terrain::render() {
 Solid_Terrain::Model_Manager::Model_Manager() {}
 
 Solid_Terrain::Model_Manager::~Model_Manager() {
-  for (auto it = model_map.begin(); it != model_map.end(); ++it)
-    delete it->second.first;
+  for (auto it = model_map.begin(); it != model_map.end();) {
+    if (it->second.first != nullptr) delete it->second.first;
+    else ++it;
+  }
 }
 
 bool Solid_Terrain::Model_Manager::find_model(const String &model_) const {

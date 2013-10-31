@@ -15,7 +15,7 @@ Game_Object::Game_Object(const Point3f &corner_,
                          const Vector3f &scale_,
                          const Quaternion &rotation_,
                          Sound_Source *sound_)
-: source(sound_),
+: source(nullptr),
   corner(corner_),
   scale(scale_),
   rotation(rotation_)

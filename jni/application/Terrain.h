@@ -21,6 +21,8 @@ class Terrain : public Game_Object {
 
     virtual ~Terrain() = 0;
   
+    virtual bool is_portal() const;
+  
     virtual bool is_cuttable() const;
     
     virtual bool is_water_filling() const;

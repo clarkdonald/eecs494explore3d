@@ -51,8 +51,7 @@ class Player {
     
     // Level 1/2
     Zeni::Camera camera;
-    Zeni::Sound_Source * source;
-    
+  
     // Level 2
     Zeni::Vector3f end_point_b;
   

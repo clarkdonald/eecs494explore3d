@@ -22,14 +22,14 @@ class Cloud {
     ~Cloud();
   private:
 
-    std::vector<Terrain*> cloud_blocks;
+    std::list<Terrain*> cloud_blocks;
 
-	void create_cloud0(const Zeni::Point3f& corner);
-	void create_cloud1(const Zeni::Point3f& corner);
-	void create_cloud2(const Zeni::Point3f& corner);
-	void create_cloud3(const Zeni::Point3f& corner);
-	void create_cloud4(const Zeni::Point3f& corner);
-	void create_cloud5(const Zeni::Point3f& corner);
+    void create_cloud0(const Zeni::Point3f& corner);
+    void create_cloud1(const Zeni::Point3f& corner);
+    void create_cloud2(const Zeni::Point3f& corner);
+    void create_cloud3(const Zeni::Point3f& corner);
+    void create_cloud4(const Zeni::Point3f& corner);
+    void create_cloud5(const Zeni::Point3f& corner);
 };
 
 #endif
