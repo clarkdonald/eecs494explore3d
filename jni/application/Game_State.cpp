@@ -16,6 +16,7 @@
 #include "Skybox.h"
 #include "Map_Manager.h"
 #include "Cloud.h"
+#include "White_Ghost.h"
 #include <utility>
 #include <fstream>
 #include <map>
@@ -42,6 +43,10 @@ Game_State::Game_State(const std::string &file_)
   /** load common room **/
   load_map(file_);
   level_type_e = ((file_ == "../assets/maps/common.txt") ? COMMON : GAME);
+
+  monsters.push_back(new White_Ghost(Point3f(2500.0f, 3600.0f, 50.0f)));
+  monsters.push_back(new White_Ghost(Point3f(2600.0f, 3700.0f, 50.0f)));
+  monsters.push_back(new White_Ghost(Point3f(2700.0f, 3750.0f, 50.0f)));
   
   /** load BGM **/
   Sound &sr = get_Sound();
@@ -214,6 +219,19 @@ void Game_State::perform_logic() {
       }
     }
   }
+
+  //have monsters run their AI. delete them if they are dead.
+  for(auto it = monsters.begin(); it != monsters.end();)
+  {
+	  (*it) -> update(time_step);
+	  if((*it) -> is_dead())
+	  {
+		  delete (*it);
+		  it = monsters.erase(it);
+	  }
+	  else
+		  it++;
+  }
   
   /** Logic for shooting arrows **/
   if (controls.shooting_arrow) {
@@ -228,11 +246,22 @@ void Game_State::perform_logic() {
   // TODO: we need to delete arrows when they collide or disappear the world.
   // maybe collision with terrains or skybox
   for (auto it = arrows.begin(); it != arrows.end();) {
-    if ((*it)->is_done()) {
+	bool is_done = false;
+	for(auto monster : monsters)
+	{
+		if((*it)->get_body().intersects(monster->get_body()))
+		{
+			monster -> take_damage(1);
+			is_done = true;
+		}
+	}
+
+	if (is_done) {
       delete *it;
-      arrows.erase(it);
+      it = arrows.erase(it);
     }
-    else {
+    else 
+	{
       (*it)->update(time_step);
       it++;
     }
@@ -245,8 +274,9 @@ void Game_State::render(){
   
   /** Render 3D stuff **/
   vr.set_3d(player->get_camera());
-	render_skybox(player -> get_camera());
+  render_skybox(player -> get_camera());
   for (auto cloud : clouds) cloud->render();
+  for(auto monster : monsters) monster -> render();
   for (auto arrow : arrows) arrow->render();
   for (auto terrain : terrains) terrain->render();
   for (auto item : items) item->render();
@@ -280,6 +310,17 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
       if (velocity.k < 0.0f) player->set_on_ground(true);
     }
   }
+  
+  //collision between mosnter and player 
+  for(auto monster : monsters)
+  {
+	  if(monster -> get_body().intersects(player->get_body()))
+	  {
+		  player -> set_position(player -> get_camera().position + player->get_camera().get_forward() * -50);
+		  player -> take_damage(monster -> get_damage());
+	  }
+  }
+
 }
 
 /**

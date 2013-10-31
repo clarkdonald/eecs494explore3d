@@ -51,6 +51,10 @@
     <filepath>textures/sand_texture.png</filepath>
     <tile>1</tile>
   </SAND_TEX.PNG>
+  <PLAIN_GH.PNG>
+    <filepath>textures/plain_ghost.png</filepath>
+    <tile>1</tile>
+  </PLAIN_GH.PNG>
 
   <RED_BULL.PNG>
     <filepath>textures/red_bullet.png</filepath>

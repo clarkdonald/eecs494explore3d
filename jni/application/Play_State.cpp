@@ -19,6 +19,7 @@ Play_State::Play_State()
 : game_state(new Game_State(Map_Manager::get_Instance().get_common_room()))
 {
   set_pausable(true);
+
 }
 
 Play_State::~Play_State() {

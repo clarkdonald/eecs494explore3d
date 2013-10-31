@@ -40,6 +40,7 @@ Player::Player(const Camera &camera_,
   terrain(nullptr)
 {
   camera.fov_rad = Zeni::Global::pi / 3.0f;
+  health = 5;
   create_body();
 }
 
@@ -123,10 +124,7 @@ Terrain * Player::drop_terrain() {
 // TODO: need to be able to center the bullets when they get fired
 Arrow * Player::fire(const float& bow_power) {
 	wielding_weapon = true;
-  return new Arrow(camera.position +
-                   camera.get_forward() * 10 +
-                   camera.get_left() * 12 +
-                   camera.get_up() * -12,
+    return new Arrow(camera.position + Vector3f(18.0, 18.0, 3.0),
                    camera.get_forward(),
                    bow_power);
 }

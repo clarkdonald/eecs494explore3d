@@ -20,6 +20,7 @@ class Terrain;
 class Item;
 class Arrow;
 class Cloud;
+class Monster;
 
 class Game_State {
 public:
@@ -58,6 +59,7 @@ private:
   std::list<Item*> items;
   std::list<Terrain*> terrains;
   std::list<Arrow*> arrows;
+  std::list<Monster*> monsters;
   std::list<Cloud*> clouds;
   Player* player;
   Crosshair crosshair;
