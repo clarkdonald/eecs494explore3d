@@ -4,9 +4,9 @@ using namespace std;
 using namespace Zeni;
 
 White_Ghost::White_Ghost(const Zeni::Point3f &corner_)
-	:Monster(3, 1, corner_, Vector3f(UNIT_LENGTH, UNIT_LENGTH, UNIT_LENGTH))
+	:Monster(3, 1, corner_, Vector3f(UNIT_LENGTH / 2, UNIT_LENGTH / 2, UNIT_LENGTH / 2))
 {
-	if (!instance_count) model = new Model("models/ghost.3ds");
+	if (!instance_count) model = new Model("models/blue_pill.3ds");
 	++instance_count;
 	create_body();
 }

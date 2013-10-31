@@ -45,8 +45,8 @@ Game_State::Game_State(const std::string &file_)
   level_type_e = ((file_ == "../assets/maps/common.txt") ? COMMON : GAME);
 
   monsters.push_back(new White_Ghost(Point3f(2500.0f, 3600.0f, 50.0f)));
-  monsters.push_back(new White_Ghost(Point3f(2600.0f, 3700.0f, 50.0f)));
-  monsters.push_back(new White_Ghost(Point3f(2700.0f, 3750.0f, 50.0f)));
+  //monsters.push_back(new White_Ghost(Point3f(2600.0f, 3700.0f, 50.0f)));
+  //monsters.push_back(new White_Ghost(Point3f(2700.0f, 3750.0f, 50.0f)));
   
   /** load BGM **/
   Sound &sr = get_Sound();
