@@ -39,7 +39,7 @@ Map_Manager::Map_Manager()
   /** load the character mapping for placement terrains **/
   placement_terrain_charmap['C'] = make_pair("Stone", "Crate");
   placement_terrain_charmap['p'] = make_pair("Stone", "Portal");
-  
+
   /** load the character mapping for terrains **/
   terrain_charmap['c'] = "Concrete";
   terrain_charmap['g'] = "Grass";
@@ -52,8 +52,10 @@ Map_Manager::Map_Manager()
   terrain_charmap['p'] = "Portal";
 
   /** load the character mapping for items **/
-  item_charmap['b'] = "Bullet";
-  item_charmap['p'] = "Potion";
+  item_charmap['l'] = "Leg";
+  item_charmap['g'] = "Ghost";
+  item_charmap['f'] = "Fire";
+  item_charmap['s'] = "Strength";
 }
 
 const int & Map_Manager::get_files_left() const {

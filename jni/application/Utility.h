@@ -15,6 +15,8 @@
 const float UNIT_LENGTH = 40.0f;
 const float CAMERA_HEIGHT = 50.0f;
 const float SKINNY_HEIGHT = 5.0f;
+const float ITEM_LENGTH = 15.0f;
+const Zeni::Vector3f ITEM_SIZE = Zeni::Vector3f(ITEM_LENGTH,ITEM_LENGTH,ITEM_LENGTH);
 const Zeni::Vector3f STANDARD_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,UNIT_LENGTH);
 const Zeni::Vector3f MEDIUM_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,UNIT_LENGTH-SKINNY_HEIGHT);
 const Zeni::Vector3f SKINNY_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,SKINNY_HEIGHT);

@@ -18,7 +18,11 @@ Item::Item(const Point3f &corner_,
 
 Item::~Item() {}
 
-bool Item::for_cutting() const {
+bool Item::for_fire() const {
+  return false;
+}
+
+bool Item::for_jumping() const {
   return false;
 }
 
@@ -26,10 +30,6 @@ bool Item::for_lifting() const {
   return false;
 }
 
-bool Item::for_extinguishing() const {
-  return false;
-}
-
-bool Item::for_water_filling() const {
+bool Item::for_ghost() const {
   return false;
 }

@@ -22,8 +22,8 @@ class White_Ghost : public Monster {
 
 	~White_Ghost();
 
-private:
-	static Zeni::Model* model;
+  private:
+    static Zeni::Model* model;
     static unsigned long instance_count;
 };
 

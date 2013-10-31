@@ -17,15 +17,18 @@ using namespace Zeni::Collision;
 using std::bad_exception;
 
 Player::Abilities::Abilities()
-: lift(false)
+: lift(false), jump(false), ghost(false), water(false)
 {}
 
 void Player::Abilities::clear() {
-  lift = false;
+  lift = jump = ghost = water = false;
 }
 
 void Player::Abilities::set(const Item *item_) {
   lift = item_->for_lifting();
+  jump = item_->for_jumping();
+  ghost = item_->for_ghost();
+  water = item_->for_fire();
 }
 
 Player::Player(const Camera &camera_,
@@ -75,7 +78,8 @@ void Player::set_on_ground(const bool &is_on_ground_) {
 
 void Player::jump() {
   if (on_ground) {
-    velocity.k += 75.0f;
+    if (abilities.jump) velocity.k += 150.0f;
+    else velocity.k += 75.0f;
     on_ground = false;
   }
 }
@@ -95,10 +99,6 @@ void Player::create_body() {
   sr.set_listener_position(camera.position);
   sr.set_listener_forward_and_up(camera.get_forward(), camera.get_up());
   sr.set_listener_velocity(velocity);
-}
-
-const bool & Player::can_lift() const {
-  return abilities.lift;
 }
 
 Item * Player::drop_item() {

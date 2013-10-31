@@ -37,16 +37,14 @@ class Player {
     bool is_on_ground() const {return on_ground;}
     bool is_wielding_weapon() const {return wielding_weapon;}
     const Zeni::Vector3f & get_velocity() const {return velocity;}
-   
-	void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
+  	void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
     void set_on_ground(const bool &is_on_ground_);
-  
-	void jump();
+	  void jump();
     void step(const float &time_step);
-	void take_damage(int damage) {health -= damage;};
-
-	bool is_dead() { return health <= 0;}
-	
+  
+    // functions related to combat
+	  void take_damage(int damage) {health -= damage;};
+	  bool is_dead() { return health <= 0;}
 
     // functions related to items
     bool is_wielding_item() const {return item != nullptr;}
@@ -54,14 +52,16 @@ class Player {
     void set_item(Item *item_);
   
     // functions related to abilities from items
-    const bool & can_lift() const;
+    const bool & can_lift() const {return abilities.lift;}
+    const bool & can_walk_through_terrain() const {return abilities.ghost;}
+    const bool & can_walk_through_fire() const {return abilities.water;}
   
     // functions related to terrains
     bool is_lifting_terrain() const {return terrain != nullptr;}
     Terrain * drop_terrain();
     void set_terrain(Terrain *terrain_) {terrain = terrain_;}
   
-    //functions related to arrows
+    // functions related to arrows
     Arrow * fire(const float& bow_power);
     
   private:
@@ -70,6 +70,9 @@ class Player {
       void clear();
       void set(const Item *item_);
       bool lift;
+      bool jump;
+      bool ghost;
+      bool water;
     } abilities;
   
     void create_body();

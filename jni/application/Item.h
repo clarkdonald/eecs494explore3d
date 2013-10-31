@@ -20,13 +20,13 @@ class Item : public Game_Object {
   
     virtual ~Item() = 0;
     
-    virtual bool for_cutting() const;
+    virtual bool for_fire() const;
     
-    virtual bool for_extinguishing() const;
+    virtual bool for_jumping() const;
     
     virtual bool for_lifting() const;
     
-    virtual bool for_water_filling() const;
+    virtual bool for_ghost() const;
 };
 
 #endif /* ITEM_H */
