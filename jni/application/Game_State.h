@@ -43,6 +43,8 @@ public:
   
   bool is_done() const {return done;}
   
+  bool is_common() const {return level_type_e == COMMON;}
+  
 private:
   void clear();
   
@@ -62,6 +64,7 @@ private:
   bool moved;
   bool done;
   Dimension dimension;
+  enum Level_Type { COMMON, GAME } level_type_e;
 };
 
 #endif /* GAME_STATE_H */

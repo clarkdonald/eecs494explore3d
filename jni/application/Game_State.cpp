@@ -41,6 +41,7 @@ Game_State::Game_State(const std::string &file_)
 {
   /** load common room **/
   load_map(file_);
+  level_type_e = ((file_ == "../assets/maps/common.txt") ? COMMON : GAME);
   
   /** load BGM **/
   Sound &sr = get_Sound();

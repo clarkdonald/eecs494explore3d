@@ -9,9 +9,11 @@
 #include "Play_State.h"
 #include "Map_Manager.h"
 #include "Game_State.h"
+#include <string>
 
 using namespace Zeni;
 using namespace Zeni::Collision;
+using std::string;
 
 Play_State::Play_State()
 : game_state(new Game_State(Map_Manager::get_Instance().get_common_room()))
@@ -33,6 +35,15 @@ void Play_State::on_pop() {
 }
 
 void Play_State::on_key(const SDL_KeyboardEvent &event) {
+  if (event.keysym.sym == SDLK_p && event.type == SDL_KEYDOWN) {
+    std::cout << "POOP!\n";
+    string file = game_state->is_common() ?
+      Map_Manager::get_Instance().get_common_room() :
+      Map_Manager::get_Instance().get_previous();
+    delete game_state;
+    game_state = new Game_State(file);
+  }
+  
   if (!game_state->on_key(event))
     Gamestate_Base::on_key(event);
 }
