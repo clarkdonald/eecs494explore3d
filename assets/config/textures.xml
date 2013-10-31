@@ -27,11 +27,30 @@
     <filepath>textures/stone_texture.png</filepath>
     <tile>1</tile>
   </STONE_TE.PNG>
-
   <CONCRETE.PNG>
     <filepath>textures/concrete_texture.png</filepath>
     <tile>1</tile>
   </CONCRETE.PNG>
+  <WHITE_TE.PNG>
+    <filepath>textures/white_texture.png</filepath>
+    <tile>1</tile>
+  </WHITE_TE.PNG>
+  <DIRT_TEX.PNG>
+    <filepath>textures/dirt_texture.png</filepath>
+    <tile>1</tile>
+  </DIRT_TEX.PNG>
+  <WATER_TE.PNG>
+    <filepath>textures/water_texture.png</filepath>
+    <tile>1</tile>
+  </WATER_TE.PNG>
+  <BRICK_TE.PNG>
+    <filepath>textures/brick_texture.png</filepath>
+    <tile>1</tile>
+  </BRICK_TE.PNG>
+  <SAND_TEX.PNG>
+    <filepath>textures/sand_texture.png</filepath>
+    <tile>1</tile>
+  </SAND_TEX.PNG>
 
   <sky>
     <filepath>textures/sky.png</filepath>
