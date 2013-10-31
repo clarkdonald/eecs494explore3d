@@ -52,7 +52,9 @@ Map_Manager::Map_Manager()
   terrain_charmap['p'] = "Portal";
 
   /** load the character mapping for items **/
-  item_charmap['b'] = "Bullet";
+  item_charmap['l'] = "Leg";
+  item_charmap['g'] = "Ghost";
+  item_charmap['f'] = "Fire";
   item_charmap['s'] = "Strength";
 }
 

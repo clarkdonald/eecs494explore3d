@@ -18,5 +18,8 @@ Item * create_item(const String &type_,
                    const Quaternion &rotation_)
 {
   if (type_ == "Strength") return new Strength_Potion(corner_, scale_, rotation_);
+  else if (type_ == "Leg") return new Leg_Potion(corner_, scale_, rotation_);
+  else if (type_ == "Ghost") return new Ghost_Potion(corner_, scale_, rotation_);
+  else if (type_ == "Fire") return new Fire_Potion(corner_, scale_, rotation_);
   else throw new std::bad_alloc;
 }
