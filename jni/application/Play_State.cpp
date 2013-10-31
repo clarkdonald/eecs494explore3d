@@ -9,6 +9,8 @@
 #include "Play_State.h"
 #include "Terrain_Factory.h"
 #include "Terrain.h"
+#include "Item_Factory.h"
+#include "Item.h"
 #include "Arrow.h"
 #include "Utility.h"
 #include "Skybox.h"
@@ -43,7 +45,6 @@ Play_State::Play_State()
   load_map(Map_Manager::get_Instance().get_next());
   
   Sound &sr = get_Sound();
-
   sr.set_BGM("music/fortunedays");
   sr.set_BGM_looping(true);
   sr.play_BGM();
@@ -81,15 +82,15 @@ void Play_State::on_key(const SDL_KeyboardEvent &event) {
       controls.right = event.type == SDL_KEYDOWN;
       break;
       
-    case SDLK_f:
+    case SDLK_e:
       controls.pickup_item = event.type == SDL_KEYDOWN;
       break;
       
-    case SDLK_g:
+    case SDLK_c:
       controls.drop_item = event.type == SDL_KEYDOWN;
       break;
       
-    case SDLK_r:
+    case SDLK_f:
       controls.use_item = event.type == SDL_KEYDOWN;
       break;
       
@@ -261,20 +262,20 @@ void Play_State::load_map(const std::string &file_) {
     for (int width = 0; width < line.length() && width < dimension.width; ++width) {
       // check each terrain/item type and place them
       if (line[width] == '.');
-      else if (line[width] == 's') {
+      else if (line[width] == '*') {
         player = new Player(Camera(Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, 55.0f),
           Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
       }
-      else if (line[width] == 'c') {
+      else if (Map_Manager::get_Instance().find_terrain(line[width])) {
         if (topology[height][width] > 1 && check_concavity(topology,height,width)) {
           terrains.push_back(
-            create_terrain("Crate",
+            create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
               Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*(topology[height][width]-1)), OBJECT_SIZE));
         }
         else {
           for (int i = 0; i < topology[height][width]; ++i) {
             terrains.push_back(
-              create_terrain("Crate",
+              create_terrain(Map_Manager::get_Instance().get_terrain(line[width]),
                 Point3f(UNIT_LENGTH*width, UNIT_LENGTH*height, UNIT_LENGTH*i), OBJECT_SIZE));
           }
         }

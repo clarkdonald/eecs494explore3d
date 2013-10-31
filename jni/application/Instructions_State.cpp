@@ -17,16 +17,18 @@ Instructions_State::Instructions_State()
      Point2f(800.0f, 600.0f),
      "system_36_800x600",
      "P U R P O S E\n"
-     "The point of the game is to get to safety by getting to your airplane. "
-     "You do this by clearing obstacles in the map you are thrown in. "
-     "Play to learn more!\n\n"
+     "You must get to safety by getting to your vehicle. "
+     "You do this by clearing obstacles in the map you are thrown in, while "
+     "shooting off or dodging away from ghosts.\n\n"
      "C O N T R O L S\n"
-     "Arrow Keys: Move the explorer\n"
-     "S Key: Pick up an item\n"
-     "D Key: Drop an item\n"
+     "WASD Keys: Move the explorer\n"
+     "Mouse Scroll: Look around\n"
+     "Mouse Left-Click: Shoot\n"
+     "Space Bar: Jump\n"
+     "E Key: Pick up an item\n"
+     "C Key: Drop an item\n"
      "F Key: Use an item\n"
-     "Space Bar: Move the explorer faster\n\n"
-     "P Key: Retry level\n"
+     "P Key: Retry level\n\n"
      "ESC to return to the menu.",
      Color())
 {

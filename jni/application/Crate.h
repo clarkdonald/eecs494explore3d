@@ -32,4 +32,3 @@ class Crate : public Terrain {
 };
 
 #endif /* CRATE_H */
-
