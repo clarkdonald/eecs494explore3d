@@ -57,7 +57,7 @@ void Player::set_on_ground(const bool &is_on_ground_) {
 
 void Player::jump() {
   if (on_ground) {
-    velocity.k += 60.0f;
+    velocity.k += 75.0f;
     on_ground = false;
   }
 }
