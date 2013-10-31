@@ -12,7 +12,7 @@ Arrow::Arrow(const Point3f &corner_,
               nullptr),
   current_state(IN_MOTION), forward(forward_), power(power_)
 {
-	if (!instance_count) model = new Model("models/sphere.3DS");
+	if (!instance_count) model = new Model("models/red_bullet.3DS");
 	++instance_count;
 	create_body();
 }
