@@ -184,7 +184,7 @@ void Game_State::perform_logic() {
             Terrain* terrain = player->drop_terrain();
             Point3f pos = Point3f(player->get_camera().position.x,
                                   player->get_camera().position.y,
-                                  player->get_camera().position.z - CAMERA_HEIGHT);
+                                  player->get_camera().position.z - CAMERA_HEIGHT + 5.0f);
             terrain->set_corner(pos);
             terrains.push_back(terrain);
           }

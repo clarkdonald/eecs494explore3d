@@ -19,6 +19,8 @@ class Item : public Game_Object {
          const Zeni::Quaternion &rotation_ = Zeni::Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f));
   
     virtual ~Item() = 0;
+  
+    const Zeni::Collision::Capsule & get_body() const {return body;}
     
     virtual bool for_fire() const;
     
@@ -27,6 +29,11 @@ class Item : public Game_Object {
     virtual bool for_lifting() const;
     
     virtual bool for_ghost() const;
+  
+    void create_body() override;
+  
+  private:
+    Zeni::Collision::Capsule body; // collision
 };
 
 #endif /* ITEM_H */

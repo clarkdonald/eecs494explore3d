@@ -15,7 +15,7 @@
 const float UNIT_LENGTH = 40.0f;
 const float CAMERA_HEIGHT = 50.0f;
 const float SKINNY_HEIGHT = 5.0f;
-const float ITEM_LENGTH = 15.0f;
+const float ITEM_LENGTH = 1.0f;
 const float FIRE_LENGTH = UNIT_LENGTH*3;
 const Zeni::Vector3f FIRE_SIZE = Zeni::Vector3f(UNIT_LENGTH,UNIT_LENGTH,FIRE_LENGTH);
 const Zeni::Vector3f ITEM_SIZE = Zeni::Vector3f(ITEM_LENGTH,ITEM_LENGTH,ITEM_LENGTH);

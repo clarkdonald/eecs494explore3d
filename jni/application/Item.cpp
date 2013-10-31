@@ -7,8 +7,10 @@
 //
 
 #include "Item.h"
+#include "Utility.h"
 
 using namespace Zeni;
+using namespace Zeni::Collision;
 
 Item::Item(const Point3f &corner_,
            const Vector3f &scale_,
@@ -32,4 +34,10 @@ bool Item::for_lifting() const {
 
 bool Item::for_ghost() const {
   return false;
+}
+
+void Item::create_body() {
+  body = Capsule(get_corner(),
+                 get_corner() + Vector3f(get_scale().x,get_scale().y,0.0f),
+                 get_scale().z);
 }

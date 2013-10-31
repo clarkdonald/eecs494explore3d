@@ -91,9 +91,9 @@ class Player {
   
     bool on_ground; 
     bool wielding_weapon;
-	int health;
+	  int health;
 
-	Item* item;
+	  Item* item;
     Terrain* terrain;
 };
 
