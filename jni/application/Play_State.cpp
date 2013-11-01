@@ -62,10 +62,7 @@ void Play_State::perform_logic() {
       get_Game().pop_state();
     }
     else {
-      string file = Map_Manager::get_Instance().get_next();
-      std::cout << file << '\n';
-      game_state = new Game_State(file);
-      //game_state = new Game_State(Map_Manager::get_Instance().get_next());
+      game_state = new Game_State(Map_Manager::get_Instance().get_next());
     }
   }
   if (!over) game_state->perform_logic();
