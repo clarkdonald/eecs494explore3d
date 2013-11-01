@@ -39,7 +39,7 @@ class Player {
     const Zeni::Vector3f & get_velocity() const {return velocity;}
   	void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
     void set_on_ground(const bool &is_on_ground_);
-	void jump();
+	  void jump();
     void step(const float &time_step);
   
     // functions related to combat
@@ -63,7 +63,7 @@ class Player {
     void set_terrain(Terrain *terrain_) {terrain = terrain_;}
   
     // functions related to arrows
-    Arrow * fire(const float& bow_power);
+    Arrow * fire();
     
   private:
     struct Abilities {

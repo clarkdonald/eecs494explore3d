@@ -6,29 +6,26 @@
 
 class Arrow : public Game_Object {
   public:
-    Arrow(const Zeni::Point3f &corner_,
-          const Zeni::Vector3f& forward_,
-          const float& power);
+    Arrow(const Zeni::Point3f &corner_, const Zeni::Vector3f& forward_);
 
     void render() override;
-	const Zeni::Collision::Sphere& get_body() const { return body; }
+	  const Zeni::Collision::Sphere& get_body() const { return body; }
     void update(const float& time_step) override;
 
-	float get_distance_traveled() {return distance_traveled;}
+	  float get_distance_traveled() {return distance_traveled;}
 
     ~Arrow();
 
-protected:
-	void create_body() override;
+  protected:
+    void create_body() override;
 
-private:
+  private:
     Zeni::Vector3f forward;
-    float power;
-	float distance_traveled;
+    float distance_traveled;
     static Zeni::Model* model;
     static unsigned long instance_count;
 
-	Zeni::Collision::Sphere body;
+    Zeni::Collision::Sphere body;
 };
 
 #endif

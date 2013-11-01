@@ -3,14 +3,12 @@
 using namespace std;
 using namespace Zeni;
 
-Arrow::Arrow(const Point3f &corner_,
-             const Vector3f& forward_,
-             const float& power_)
+Arrow::Arrow(const Point3f &corner_, const Vector3f& forward_)
 : Game_Object(corner_,
               Vector3f(0.5f, 0.5f, 0.5f),
               Quaternion::Axis_Angle(Vector3f(0.0f, 0.0f, 1.0f), 0.0f),
               nullptr),
-    forward(forward_), power(power_), distance_traveled(0.0f)
+    forward(forward_), distance_traveled(0.0f)
 {
 	if (!instance_count) model = new Model("models/sphere.3DS");
 	++instance_count;
@@ -40,8 +38,7 @@ void Arrow::update(const float& time_step)
 	create_body();
 }
 
-void Arrow::create_body()
-{
+void Arrow::create_body() {
 	body = Collision::Sphere(get_corner() + Vector3f(-18.0f, -18.0f, -3.0f), 1);
 }
 

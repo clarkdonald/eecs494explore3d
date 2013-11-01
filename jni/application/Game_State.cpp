@@ -242,15 +242,12 @@ void Game_State::perform_logic() {
   }
   
   /** Logic for shooting arrows **/
-  if (controls.shooting_arrow) {
-	  bow_power += time_step * 100;
-	  if (bow_power > 200) bow_power = 200.0f;
-    arrows.push_back(player->fire(bow_power));
+  if (!shooting_timer.is_running()) {
+    if (controls.shooting_arrow) arrows.push_back(player->fire());
+    shooting_timer.reset();
+    shooting_timer.start();
   }
-  else if (bow_power >= 0.5f && !controls.shooting_arrow) {
-		arrows.push_back(player->fire(bow_power));
-		bow_power = 0.0f;
-  }
+  else if (shooting_timer.seconds() > 0.3f) shooting_timer.stop();
 
   /** Logic to update arrows **/
   for (auto it = arrows.begin(); it != arrows.end();) {
@@ -319,14 +316,13 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
   }
   
   /** Logic for collision between mosnter and player **/
-  for (auto monster : monsters)
-  {
-	  if (monster -> get_body().intersects(player->get_body())) {
-		  player -> set_position(player -> get_camera().position + player->get_camera().get_forward() * -100);
-		  player -> take_damage(monster -> get_damage());
+  for (auto monster : monsters) {
+	  if (monster->get_body().intersects(player->get_body())) {
+      // TODO: We can't let the monsters move us back into a terrain, big glitch
+		  player->set_position(player->get_camera().position + player->get_camera().get_forward() * -100);
+		  player->take_damage(monster -> get_damage());
 	  }
   }
-
 }
 
 /**

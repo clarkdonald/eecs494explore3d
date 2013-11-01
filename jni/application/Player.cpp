@@ -120,10 +120,8 @@ Terrain * Player::drop_terrain() {
   return ret;
 }
 
-// TODO: need to be able to center the bullets when they get fired
-Arrow * Player::fire(const float& bow_power) {
+Arrow * Player::fire() {
 	wielding_weapon = true;
-    return new Arrow(camera.position + Vector3f(18.0, 18.0, 3.0),
-                   camera.get_forward(),
-                   bow_power);
+  return new Arrow(camera.position + Vector3f(18.0, 18.0, 3.0),
+                   camera.get_forward());
 }
