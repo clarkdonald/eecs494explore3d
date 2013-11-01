@@ -19,7 +19,6 @@ Play_State::Play_State()
 : game_state(new Game_State(Map_Manager::get_Instance().get_common_room()))
 {
   set_pausable(true);
-
 }
 
 Play_State::~Play_State() {}
@@ -59,11 +58,15 @@ void Play_State::perform_logic() {
   if (game_state->is_done()) {
     delete game_state;
     if (Map_Manager::get_Instance().empty()) {
-      std::cout << "Exiting\n";
       over = true;
       get_Game().pop_state();
     }
-    else game_state = new Game_State(Map_Manager::get_Instance().get_next());
+    else {
+      string file = Map_Manager::get_Instance().get_next();
+      std::cout << file << '\n';
+      game_state = new Game_State(file);
+      //game_state = new Game_State(Map_Manager::get_Instance().get_next());
+    }
   }
   if (!over) game_state->perform_logic();
 }

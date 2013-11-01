@@ -16,7 +16,7 @@ Fire::Fire(const Point3f &corner_,
              const Quaternion &rotation_)
 : Terrain(corner_, scale_, rotation_)
 {
-  if (!instance_count) model = new Model("models/fire.3ds");
+  if (!instance_count) model = new Model("models/fire_block.3ds");
   ++instance_count;
   create_body();
 }

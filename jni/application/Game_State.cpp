@@ -184,14 +184,6 @@ void Game_State::perform_logic() {
   }
   
   /** Logic for items **/
-//    if (controls.drop_item) {
-//      Item* item = player->drop_item();
-//      Point3f pos = Point3f(player->get_camera().position.x,
-//                            player->get_camera().position.y,
-//                            player->get_camera().position.z - CAMERA_HEIGHT);
-//      item->set_corner(pos);
-//      items.push_back(item);
-//    }
   if (controls.use_item) {
     if (!use_timer.is_running()) {
       if (player->can_lift()) {
@@ -320,7 +312,7 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
   for (auto monster : monsters) {
 	  if (monster->get_body().intersects(player->get_body())) {
       // TODO: We can't let the monsters move us back into a terrain, big glitch
-		  player->set_position(player->get_camera().position + player->get_camera().get_forward() * -100);
+		  //player->set_position(player->get_camera().position + player->get_camera().get_forward() * -100);
 		  player->take_damage(monster -> get_damage());
 	  }
   }
