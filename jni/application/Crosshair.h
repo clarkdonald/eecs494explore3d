@@ -17,7 +17,7 @@ class Crosshair {
 
     ~Crosshair();
   
-    void render(const bool &is_wielding_weapon);
+    void render(const bool &is_wielding_weapon, int player_health, int monsters_killed);
   
     const float & get_radius() {return radius;}
   

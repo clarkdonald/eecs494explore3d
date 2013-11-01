@@ -39,12 +39,13 @@ class Player {
     const Zeni::Vector3f & get_velocity() const {return velocity;}
   	void set_velocity(const Zeni::Vector3f &velocity_) {velocity = velocity_;}
     void set_on_ground(const bool &is_on_ground_);
-	  void jump();
+	void jump();
     void step(const float &time_step);
   
     // functions related to combat
 	  void take_damage(int damage) {health -= damage;};
 	  bool is_dead() { return health <= 0;}
+	  int get_health() {return health;}
 
     // functions related to items
     //bool is_wielding_item() const {return item != nullptr;}

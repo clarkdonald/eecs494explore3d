@@ -63,9 +63,11 @@ private:
   std::list<Cloud*> clouds;
   Player* player;
   Crosshair crosshair;
+  float spawn_timer;
   float bow_power;
   bool moved;
   bool done;
+  int monsters_killed;
   Dimension dimension;
   enum Level_Type { COMMON, GAME } level_type_e;
 };

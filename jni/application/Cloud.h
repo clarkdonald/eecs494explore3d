@@ -10,6 +10,8 @@ class Terrain;
 const Zeni::Vector3f CLOUD_SIZE = Zeni::Vector3f(100.0f, 100.0f, 20.0f);
 const float CLOUD_HEIGHT = 800.0f;
 const float CLOUD_LENGTH = 100.0f;
+const int NUM_CLOUD_TYPES = 6;
+const int MAX_CLOUDS = 15;
 
 class Cloud {
   public:
@@ -18,6 +20,8 @@ class Cloud {
     void render();
   
     void update(const float& time_step);
+
+	bool is_done() {return distance_traveled >= max_distance;}
 
     ~Cloud();
   private:
@@ -30,6 +34,9 @@ class Cloud {
     void create_cloud3(const Zeni::Point3f& corner);
     void create_cloud4(const Zeni::Point3f& corner);
     void create_cloud5(const Zeni::Point3f& corner);
+
+	float distance_traveled;
+	float max_distance;
 };
 
 #endif

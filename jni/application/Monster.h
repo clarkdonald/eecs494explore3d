@@ -15,16 +15,19 @@
 
 class Monster : public Game_Object {
   public:
-    Monster(int health_, int damage_, 
+    Monster(int health_, int damage_, int speed_, 
 			const Zeni::Point3f &corner_ = Zeni::Point3f(0.0f, 0.0f, 0.0f),
             const Zeni::Vector3f &scale_ = Zeni::Vector3f(1.0f, 1.0f, 1.0f),
             const Zeni::Quaternion &rotation_ = Zeni::Quaternion::Axis_Angle(Zeni::Vector3f(0.0f, 0.0f, 1.0f), 0.0f));
 
-    void update(const float& time_step) = 0;
+    virtual void update(const float& time_step, const Zeni::Point3f& player_position) = 0;
     void take_damage(int damage);
     bool is_dead() { return health <= 0; }
 
     int get_damage() {return damage;}
+
+protected:
+	int speed;
 
   private:
     int health;

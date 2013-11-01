@@ -3,8 +3,8 @@
 using namespace std;
 using namespace Zeni;
 
-White_Ghost::White_Ghost(const Zeni::Point3f &corner_)
-: Monster(3, 1, corner_, Vector3f(UNIT_LENGTH, UNIT_LENGTH, UNIT_LENGTH)) {
+White_Ghost::White_Ghost(const Point3f &corner_)
+: Monster(3, 1, rand() % 3 + 1, corner_, Vector3f(UNIT_LENGTH, UNIT_LENGTH, UNIT_LENGTH)) {
 	if (!instance_count) model = new Model("models/ghost.3ds");
 	++instance_count;
 	create_body();
@@ -25,8 +25,10 @@ void White_Ghost::render() {
   model->render();
 }
 
-void White_Ghost::update(const float& time_step) {
-	//some basic AI code
+void White_Ghost::update(const float& time_step, const Point3f& player_position) 
+{
+	Vector3f direction_to_player = Vector3f(player_position - get_corner());
+	set_corner(get_corner() + time_step * (speed / 6.0f) * direction_to_player);
 }
 
 Model* White_Ghost::model = 0;

@@ -73,6 +73,21 @@
     <filepath>textures/normal_cross_hair.png</filepath>
     <tile>0</tile>
   </normal_crosshair>
+
+  <PORTAL.PNG>
+    <filepath>textures/portal.png</filepath>
+    <tile>0</tile>
+  </PORTAL.PNG>
+
+  <filled_heart>
+    <filepath>textures/filled_heart.png</filepath>
+    <tile>0</tile>
+  </filled_heart>
+
+  <empty_heart>
+    <filepath>textures/empty_heart.png</filepath>
+    <tile>0</tile>
+  </empty_heart>
   
   <!-- Pills -->
   <BLUE.PNG>

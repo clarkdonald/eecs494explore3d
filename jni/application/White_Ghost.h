@@ -17,7 +17,7 @@ class White_Ghost : public Monster {
   public:
     White_Ghost(const Zeni::Point3f &corner_ = Zeni::Point3f(0.0f, 0.0f, 0.0f));
 
-	void update(const float& time_step) override;
+	void update(const float& time_step, const Zeni::Point3f& player_position) override;
 	void render() override;
 
 	~White_Ghost();

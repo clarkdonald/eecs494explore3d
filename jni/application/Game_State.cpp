@@ -15,6 +15,7 @@
 #include "Utility.h"
 #include "Skybox.h"
 #include "Map_Manager.h"
+#include "Monster_Manager.h"
 #include "Cloud.h"
 #include "White_Ghost.h"
 #include <utility>
@@ -38,15 +39,13 @@ using std::endl;
 Game_State::Game_State(const std::string &file_)
 
 : player(nullptr),
-  done(false)
+  done(false),
+  spawn_timer(0.0f),
+  monsters_killed(0)
 {
   /** load common room **/
   load_map(file_);
   level_type_e = ((file_ == "../assets/maps/common.txt") ? COMMON : GAME);
-
-  monsters.push_back(new White_Ghost(Point3f(2500.0f, 3600.0f, 50.0f)));
-  //monsters.push_back(new White_Ghost(Point3f(2600.0f, 3700.0f, 50.0f)));
-  //monsters.push_back(new White_Ghost(Point3f(2700.0f, 3750.0f, 50.0f)));
   
   /** load BGM **/
   Sound &sr = get_Sound();
@@ -126,9 +125,29 @@ void Game_State::perform_logic() {
   float processing_time = float(current_time.get_seconds_since(time_passed));
   time_passed = current_time;
   float time_step = processing_time;
+
+  spawn_timer += time_step;
+
+  if(spawn_timer >= 3.0f)
+  {
+	  spawn_timer = 0;
+	  monsters.push_back(spawn_monster(player -> get_camera().position));
+  }
   
-  /** Move the clouds **/
-  for (auto cloud : clouds) cloud->update(time_step);
+  /** Move the clouds, delete them after a while so that new ones get formed **/
+  for (auto it = clouds.begin(); it != clouds.end(); ) {
+      (*it) -> update(time_step);
+	  if((*it) -> is_done())
+	  {
+        delete(*it);
+		it = clouds.erase(it);
+	  }
+	  else
+	    it++;
+  }
+
+  while(clouds.size() < MAX_CLOUDS)
+	clouds.push_back(new Cloud(Point3f(rand() % 5000, rand() % 5000, 0.0f), rand() % NUM_CLOUD_TYPES));
   
   /** Get forward and left vectors in the XY-plane **/
   const Vector3f forward = player->get_camera().get_forward().get_ij().normalized();
@@ -220,11 +239,12 @@ void Game_State::perform_logic() {
   //have monsters run their AI. delete them if they are dead.
   for(auto it = monsters.begin(); it != monsters.end();)
   {
-	  (*it) -> update(time_step);
+	  (*it) -> update(time_step, player->get_camera().position);
 	  if((*it) -> is_dead())
 	  {
 		  delete (*it);
 		  it = monsters.erase(it);
+		  monsters_killed++;
 	  }
 	  else
 		  it++;
@@ -282,7 +302,7 @@ void Game_State::render(){
   
   /** Render 2D stuff **/
   vr.set_2d(VIDEO_DIMENSION, true);
-  crosshair.render(player->is_wielding_weapon());
+  crosshair.render(player->is_wielding_weapon(), player->get_health(), monsters_killed);
   vr.clear_depth_buffer();
 }
 
@@ -317,7 +337,7 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
   {
 	  if(monster -> get_body().intersects(player->get_body()))
 	  {
-		  player -> set_position(player -> get_camera().position + player->get_camera().get_forward() * -50);
+		  player -> set_position(player -> get_camera().position + player->get_camera().get_forward() * -100);
 		  player -> take_damage(monster -> get_damage());
 	  }
   }
@@ -472,7 +492,13 @@ void Game_State::load_map(const std::string &file_) {
                              Quaternion(), 1.0f, 10000.0f), Vector3f(0.0f, 0.0f, -39.0f), 11.0f);
   
   /** Spawn cloud **/
-  clouds.push_back(new Cloud(Point3f(0.0f, 0.0f, 0.0f), 0));
+  while(clouds.size() < MAX_CLOUDS)
+	clouds.push_back(new Cloud(Point3f(rand() % 5000, rand() % 5000, 0.0f), rand() % NUM_CLOUD_TYPES));
+
+  
+  //spawn 5 of these bad guys
+  for(int k = 0; k < 5; k++)
+	monsters.push_back(spawn_monster(player -> get_camera().position));
   
   file.close();
 }
