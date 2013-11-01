@@ -42,6 +42,8 @@ public:
   
   void render();
   
+  bool is_dead() const {return dead;}
+  
   bool is_done() const {return done;}
   
   bool is_common() const {return level_type_e == COMMON;}
@@ -55,6 +57,8 @@ private:
   
   Zeni::Time_HQ time_passed;
   Zeni::Chronometer<Zeni::Time> use_timer;
+  Zeni::Chronometer<Zeni::Time> shoot_timer;
+  Zeni::Chronometer<Zeni::Time> hit_timer;
   Zeni::Chronometer<Zeni::Time> shooting_timer;
   Controls controls;
   std::list<Item*> items;
@@ -68,6 +72,7 @@ private:
   float bow_power;
   bool moved;
   bool done;
+  bool dead;
   int monsters_killed;
   Dimension dimension;
   enum Level_Type { COMMON, GAME } level_type_e;

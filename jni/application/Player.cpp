@@ -49,7 +49,6 @@ Player::Player(const Camera &camera_,
 
 Player::~Player() {
   if (terrain != nullptr) delete terrain;
-  //if (item != nullptr) delete item;
 }
 
 void Player::set_position(const Point3f &position) {
@@ -101,14 +100,6 @@ void Player::create_body() {
   sr.set_listener_velocity(velocity);
 }
 
-//Item * Player::drop_item() {
-//  if (!is_wielding_item()) throw new bad_exception;
-//  abilities.clear();
-//  Item *ret = item;
-//  item = nullptr;
-//  return ret;
-//}
-
 void Player::set_item(Item *item_) {
   abilities.set(item_);
 }
@@ -121,7 +112,6 @@ Terrain * Player::drop_terrain() {
 }
 
 Arrow * Player::fire() {
-	wielding_weapon = true;
   return new Arrow(camera.position + Vector3f(18.0, 18.0, 3.0),
                    camera.get_forward());
 }
