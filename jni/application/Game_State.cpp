@@ -187,10 +187,10 @@ void Game_State::perform_logic() {
   if (controls.use_item) {
     if (!use_timer.is_running()) {
       if (player->can_lift()) {
-        if (player->is_lifting_terrain()) {
+        if (player->is_lifting_terrain() && player->is_on_ground()) {
           Terrain* terrain = player->drop_terrain();
-          Point3f pos = Point3f(player->get_camera().position.x,
-                                player->get_camera().position.y,
+		  Point3f pos = Point3f(player->get_camera().position.x + player->get_camera().get_forward().get_i().magnitude() * -60.0f,
+                                player->get_camera().position.y + player->get_camera().get_forward().get_j().magnitude() * -60.0f,
                                 player->get_camera().position.z - CAMERA_HEIGHT + 5.0f);
           terrain->set_corner(pos);
           terrains.push_back(terrain);
@@ -198,7 +198,7 @@ void Game_State::perform_logic() {
         else {
           for (auto it = terrains.begin(); it != terrains.end(); ++it) {
             if ((*it)->is_portable()) {
-              if ((*it)->get_body().intersects(player->get_body())) {
+              if ((*it)->get_big_body().intersects(player->get_body())) {
                 player->set_terrain(*it);
                 terrains.erase(it);
                 break;

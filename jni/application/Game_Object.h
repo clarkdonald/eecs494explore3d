@@ -24,10 +24,10 @@ class Game_Object {
     virtual void collide();
 
     const Zeni::Point3f & get_corner() const {return corner;}
-	  const Zeni::Vector3f & get_scale() const {return scale;}
+	const Zeni::Vector3f & get_scale() const {return scale;}
     const Zeni::Quaternion & get_rotation() const {return rotation;}
 
-    void set_corner(const Zeni::Point3f &corner_) {corner = corner_; create_body();}
+    virtual void set_corner(const Zeni::Point3f &corner_) {corner = corner_; create_body();}
     void set_scale(const Zeni::Vector3f &scale_) {scale = scale_; create_body();}
     void set_rotation(const Zeni::Quaternion &rotation_) {rotation = rotation_; create_body();}
     const Zeni::Collision::Parallelepiped & get_body() const {return body;}

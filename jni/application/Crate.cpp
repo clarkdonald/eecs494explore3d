@@ -20,6 +20,7 @@ Crate::Crate(const Point3f &corner_,
   if (!instance_count) model = new Model("models/crate.3ds");
   ++instance_count;
   create_body();
+  create_big_body();
 }
 
 Crate::Crate(const Crate &rhs)
@@ -29,6 +30,7 @@ Crate::Crate(const Crate &rhs)
 {
   ++instance_count;
   create_body();
+  create_big_body();
 }
 
 Crate & Crate::operator=(const Crate &rhs) {
@@ -36,6 +38,7 @@ Crate & Crate::operator=(const Crate &rhs) {
   set_scale(rhs.get_scale());
   set_rotation(rhs.get_rotation());
   create_body();
+  create_big_body();
   return *this;
 }
 
@@ -56,6 +59,14 @@ void Crate::render() {
 
 bool Crate::is_portable() const {
 	return true;
+}
+
+void Crate::create_big_body()
+{
+	big_body = Parallelepiped(get_corner(),
+						get_rotation() * get_scale().get_i() * 1.2,
+                        get_rotation() * get_scale().get_j() * 1.2,
+                        get_rotation() * get_scale().get_k() * 1.2);
 }
 
 Model * Crate::model = 0;

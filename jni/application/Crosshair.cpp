@@ -57,4 +57,8 @@ void Crosshair::render(const bool &is_wielding_weapon, Player* player) {
     render_image("green_pill", Point2f(x_val, 32.0f), Point2f(x_val + 32.0f, 64.0f));
 	  x_val += 32;
   }
+  if(player -> is_lifting_terrain()){
+    render_image("CRATE.PNG", Point2f(x_val, 32.0f), Point2f(x_val + 32.0f, 64.0f));
+	  x_val += 32;
+  }
 }

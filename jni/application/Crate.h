@@ -25,12 +25,17 @@ class Crate : public Terrain {
     ~Crate();
     
     virtual void render() override;
+
+	const Zeni::Collision::Parallelepiped & get_big_body() const {return big_body;} 
+	void create_big_body();
+	virtual void set_corner(const Zeni::Point3f &corner_) {Game_Object::set_corner(corner_); create_big_body();}
   
     bool is_portable() const override;
   
   private:
     static Zeni::Model * model;
     static unsigned long instance_count;
+	Zeni::Collision::Parallelepiped big_body;
 };
 
 #endif /* CRATE_H */
