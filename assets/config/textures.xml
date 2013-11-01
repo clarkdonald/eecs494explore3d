@@ -56,6 +56,11 @@
     <tile>1</tile>
   </PLAIN_GH.PNG>
 
+  <FIRE.PNG>
+    <filepath>textures/fire.png</filepath>
+    <tile>1</tile>
+  </FIRE.PNG>
+
   <RED_BULL.PNG>
     <filepath>textures/red_bullet.png</filepath>
     <tile>1</tile>
