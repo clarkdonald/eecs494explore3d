@@ -26,6 +26,8 @@ class Terrain : public Game_Object {
     virtual bool is_portable() const;
   
     virtual bool is_fire() const;
+
+	virtual const Zeni::Collision::Parallelepiped & get_big_body() const {return get_body();} 
 };
 
 #endif /* TERRAIN_H */
