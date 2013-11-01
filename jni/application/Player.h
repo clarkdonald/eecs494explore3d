@@ -48,15 +48,13 @@ class Player {
 	  int get_health() {return health;}
 
     // functions related to items
-    //bool is_wielding_item() const {return item != nullptr;}
-    //Item * drop_item();
     void set_item(Item *item_);
   
     // functions related to abilities from items
     const bool & can_lift() const {return abilities.lift;}
     const bool & can_walk_through_terrain() const {return abilities.ghost;}
     const bool & can_walk_through_fire() const {return abilities.water;}
-	const bool& can_jump() const {return abilities.jump;}
+	  const bool& can_jump() const {return abilities.jump;}
 
   
     // functions related to terrains
@@ -65,6 +63,7 @@ class Player {
     void set_terrain(Terrain *terrain_) {terrain = terrain_;}
   
     // functions related to arrows
+    void set_wielding(const bool &wielding_weapon_) {wielding_weapon = wielding_weapon_;}
     Arrow * fire();
     
   private:
@@ -96,7 +95,6 @@ class Player {
     bool wielding_weapon;
 	  int health;
 
-	  //Item* item;
     Terrain* terrain;
 };
 

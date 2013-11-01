@@ -236,8 +236,18 @@ void Game_State::perform_logic() {
   }
 
   /** Logic for shooting arrows **/
+  if (shoot_timer.is_running() && shoot_timer.seconds() > 3.0f) {
+    player->set_wielding(false);
+    shoot_timer.stop();
+  }
+  
   if (!shooting_timer.is_running()) {
-    if (controls.shooting_arrow) arrows.push_back(player->fire());
+    if (controls.shooting_arrow) {
+      arrows.push_back(player->fire());
+      shoot_timer.reset();
+      shoot_timer.start();
+      player->set_wielding(true);
+    }
     shooting_timer.reset();
     shooting_timer.start();
   }

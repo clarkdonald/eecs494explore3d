@@ -57,6 +57,7 @@ private:
   
   Zeni::Time_HQ time_passed;
   Zeni::Chronometer<Zeni::Time> use_timer;
+  Zeni::Chronometer<Zeni::Time> shoot_timer;
   Zeni::Chronometer<Zeni::Time> hit_timer;
   Zeni::Chronometer<Zeni::Time> shooting_timer;
   Controls controls;
