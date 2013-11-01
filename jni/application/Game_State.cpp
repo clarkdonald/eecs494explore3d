@@ -62,7 +62,7 @@ Game_State::~Game_State() {
     if (*it != nullptr) delete *it;
   for (auto it = clouds.begin(); it != clouds.end(); ++it)
     if (*it != nullptr) delete *it;
-  delete player;
+  if (player != nullptr) delete player;
   get_Sound().stop_BGM();
 }
 
@@ -245,6 +245,7 @@ void Game_State::perform_logic() {
   if (controls.shooting_arrow) {
 	  bow_power += time_step * 100;
 	  if (bow_power > 200) bow_power = 200.0f;
+    arrows.push_back(player->fire(bow_power));
   }
   else if (bow_power >= 0.5f && !controls.shooting_arrow) {
 		arrows.push_back(player->fire(bow_power));

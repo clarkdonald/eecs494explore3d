@@ -22,9 +22,7 @@ Play_State::Play_State()
 
 }
 
-Play_State::~Play_State() {
-  if (game_state != nullptr) delete game_state;
-}
+Play_State::~Play_State() {}
 
 void Play_State::on_push() {
   get_Window().set_mouse_state(Window::MOUSE_RELATIVE);
@@ -36,35 +34,40 @@ void Play_State::on_pop() {
 }
 
 void Play_State::on_key(const SDL_KeyboardEvent &event) {
-  if (event.keysym.sym == SDLK_p && event.type == SDL_KEYDOWN) {
-    string file = game_state->is_common() ?
+  if (event.keysym.sym == SDLK_p && event.type == SDL_KEYDOWN && game_state != nullptr) {
+      string file = game_state->is_common() ?
       Map_Manager::get_Instance().get_common_room() :
       Map_Manager::get_Instance().get_previous();
-    delete game_state;
+      delete game_state;
     game_state = new Game_State(file);
   }
   
-  if (!game_state->on_key(event))
+  if (game_state != nullptr && !game_state->on_key(event))
     Gamestate_Base::on_key(event);
 }
 
 void Play_State::on_mouse_button(const SDL_MouseButtonEvent &event) {
-  game_state->on_mouse_button(event);
+  if (game_state != nullptr) game_state->on_mouse_button(event);
 }
 
 void Play_State::on_mouse_motion(const SDL_MouseMotionEvent &event) {
-  game_state->on_mouse_motion(event);
+  if (game_state != nullptr) game_state->on_mouse_motion(event);
 }
 
 void Play_State::perform_logic() {
+  bool over = false;
   if (game_state->is_done()) {
     delete game_state;
-    if (Map_Manager::get_Instance().empty()) get_Game().pop_state();
+    if (Map_Manager::get_Instance().empty()) {
+      std::cout << "Exiting\n";
+      over = true;
+      get_Game().pop_state();
+    }
     else game_state = new Game_State(Map_Manager::get_Instance().get_next());
   }
-  game_state->perform_logic();
+  if (!over) game_state->perform_logic();
 }
 
 void Play_State::render(){
-  game_state->render();
+  if (game_state != nullptr) game_state->render();
 }
