@@ -16,7 +16,7 @@ Fire_Potion::Fire_Potion(const Zeni::Point3f &corner_,
                                  const Zeni::Quaternion &rotation_)
 : Item(corner_, scale_, rotation_)
 {
-  if (!instance_count) model = new Model("models/blue_pill.3ds");
+  if (!instance_count) model = new Model("models/blue_pill_test.3ds");
   ++instance_count;
   create_body();
 }

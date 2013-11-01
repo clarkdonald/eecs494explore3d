@@ -56,6 +56,8 @@ class Player {
     const bool & can_lift() const {return abilities.lift;}
     const bool & can_walk_through_terrain() const {return abilities.ghost;}
     const bool & can_walk_through_fire() const {return abilities.water;}
+	const bool& can_jump() const {return abilities.jump;}
+
   
     // functions related to terrains
     bool is_lifting_terrain() const {return terrain != nullptr;}

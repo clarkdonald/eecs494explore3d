@@ -116,4 +116,27 @@
     <tile>1</tile>
   </GREEN.PNG>
   
+  <!-- 2D pills-->
+
+  <blue_pill>
+    <filepath>textures/blue_pill.png</filepath>
+    <tile>1</tile>
+  </blue_pill>
+  <yellow_pill>
+    <filepath>textures/yellow_pill.png</filepath>
+    <tile>1</tile>
+  </yellow_pill>
+  <white_pill>
+    <filepath>textures/white_pill.png</filepath>
+    <tile>1</tile>
+  </white_pill>
+  <red_pill>
+    <filepath>textures/red_pill.png</filepath>
+    <tile>1</tile>
+  </red_pill>
+  <green_pill>
+    <filepath>textures/green_pill.png</filepath>
+    <tile>1</tile>
+  </green_pill>
+  
 </Textures>
