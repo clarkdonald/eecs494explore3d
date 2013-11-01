@@ -89,10 +89,6 @@ bool Game_State::on_key(const SDL_KeyboardEvent &event) {
       controls.pickup_item = event.type == SDL_KEYDOWN;
       break;
       
-    case SDLK_c:
-      controls.drop_item = event.type == SDL_KEYDOWN;
-      break;
-      
     case SDLK_f:
       controls.use_item = event.type == SDL_KEYDOWN;
       break;

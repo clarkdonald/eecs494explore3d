@@ -32,7 +32,6 @@ struct Controls {
   bool back;
   bool right;
   bool pickup_item;
-  bool drop_item;
   bool use_item;
   bool shooting_arrow;
 };

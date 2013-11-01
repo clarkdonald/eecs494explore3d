@@ -17,19 +17,18 @@ Instructions_State::Instructions_State()
      Point2f(800.0f, 600.0f),
      "system_36_800x600",
      "P U R P O S E\n"
-     "You must get to safety by getting to a magic portal. "
-     "You do this by clearing obstacles in the map you are thrown in, while "
-     "shooting off or dodging away from ghosts.\n\n"
+     "Your goal is to get to a magic portal. Ghosts will come in the way, "
+     "but you have 4 pills to help you.  Yellow Pill lets you pick up crates, "
+     "Blue Pill lets you walk through fire, White Pill lets you walk through "
+     "buildings, and Green Pill lets you jump high.\n\n"
      "C O N T R O L S\n"
      "WASD Keys: Move the explorer\n"
      "Mouse Scroll: Look around\n"
      "Mouse Left-Click: Shoot\n"
      "Space Bar: Jump\n"
-     "E Key: Pick up an item\n"
-     "C Key: Drop an item\n"
-     "F Key: Use an item\n"
-     "P Key: Retry level\n\n"
-     "ESC to return to the menu.",
+     "E Key: Pick up a pill\n"
+     "F Key: Pick up crate when you have Yellow Pill\n"
+     "P Key: Retry level",
      Color())
 {
   tb.give_BG_Renderer(new Widget_Renderer_Color(get_Colors()["black"]));

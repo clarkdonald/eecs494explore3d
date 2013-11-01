@@ -14,7 +14,6 @@ Controls::Controls()
   back(false),
   right(false),
   pickup_item(false),
-  drop_item(false),
   use_item(false),
   shooting_arrow(false)
 {}
