@@ -37,17 +37,16 @@ using std::cerr;
 using std::endl;
 
 Game_State::Game_State(const std::string &file_)
-
 : player(nullptr),
-  done(false),
   spawn_timer(0.0f),
+  done(false),
   monsters_killed(0)
 {
-  /** load common room **/
+  /** Load common room **/
   load_map(file_);
   level_type_e = ((file_ == "../assets/maps/common.txt") ? COMMON : GAME);
   
-  /** load BGM **/
+  /** Load BGM **/
   Sound &sr = get_Sound();
   sr.set_BGM("music/fortunedays");
   sr.set_BGM_looping(true);
@@ -128,22 +127,19 @@ void Game_State::perform_logic() {
 
   spawn_timer += time_step;
 
-  if(spawn_timer >= 3.0f)
-  {
+  if (spawn_timer >= 3.0f) {
 	  spawn_timer = 0;
 	  monsters.push_back(spawn_monster(player -> get_camera().position));
   }
   
   /** Move the clouds, delete them after a while so that new ones get formed **/
-  for (auto it = clouds.begin(); it != clouds.end(); ) {
-      (*it) -> update(time_step);
-	  if((*it) -> is_done())
-	  {
-        delete(*it);
-		it = clouds.erase(it);
+  for (auto it = clouds.begin(); it != clouds.end();) {
+    (*it) -> update(time_step);
+	  if((*it) -> is_done()) {
+      delete(*it);
+		  it = clouds.erase(it);
 	  }
-	  else
-	    it++;
+	  else it++;
   }
 
   while(clouds.size() < MAX_CLOUDS)
@@ -155,7 +151,7 @@ void Game_State::perform_logic() {
   
   /** Get velocity vector split into a number of axes **/
   const Vector3f velocity = (controls.forward - controls.back) * 70.0f * forward
-  + (controls.left - controls.right) * 70.0f * left;
+    + (controls.left - controls.right) * 70.0f * left;
   const Vector3f x_vel = velocity.get_i();
   const Vector3f y_vel = velocity.get_j();
   Vector3f z_vel = player->get_velocity().get_k();
@@ -221,9 +217,7 @@ void Game_State::perform_logic() {
       use_timer.reset();
       use_timer.start();
     }
-    else {
-      if (use_timer.seconds() > 0.3f) use_timer.stop();
-    }
+    else if (use_timer.seconds() > 0.3f) use_timer.stop();
   }
   if (controls.pickup_item) {
     for (auto it = items.begin(); it != items.end(); ++it) {
@@ -236,18 +230,15 @@ void Game_State::perform_logic() {
     }
   }
 
-  //have monsters run their AI. delete them if they are dead.
-  for(auto it = monsters.begin(); it != monsters.end();)
-  {
+  /** Have monsters run their AI. delete them if they are dead. **/
+  for (auto it = monsters.begin(); it != monsters.end();) {
 	  (*it) -> update(time_step, player->get_camera().position);
-	  if((*it) -> is_dead())
-	  {
+	  if ((*it) -> is_dead()) {
 		  delete (*it);
 		  it = monsters.erase(it);
 		  monsters_killed++;
 	  }
-	  else
-		  it++;
+	  else it++;
   }
   
   /** Logic for shooting arrows **/
@@ -259,28 +250,22 @@ void Game_State::perform_logic() {
 		arrows.push_back(player->fire(bow_power));
 		bow_power = 0.0f;
   }
-  
-  // Code to update arrows
+
+  /** Logic to update arrows **/
   for (auto it = arrows.begin(); it != arrows.end();) {
-	bool is_done = false;
-	for(auto monster : monsters)
-	{
-		if((*it)->get_body().intersects(monster->get_body()))
-		{
-			monster -> take_damage(1);
-			is_done = true;
-		}
-	}
+	  bool is_done = false;
+    for (auto monster : monsters) {
+      if ((*it)->get_body().intersects(monster->get_body())) {
+        monster -> take_damage(1);
+        is_done = true;
+      }
+    }
 
-	if((*it) -> get_distance_traveled() > 4000.0f)
-		is_done = true;
-
-	if (is_done) {
+    if (is_done || (*it)->get_distance_traveled() > 4000.0f) {
       delete *it;
       it = arrows.erase(it);
     }
-    else 
-	{
+    else {
       (*it)->update(time_step);
       it++;
     }
@@ -289,9 +274,9 @@ void Game_State::perform_logic() {
 
 void Game_State::render(){
   if (done) return;
-  Video &vr = get_Video();
   
   /** Render 3D stuff **/
+  Video &vr = get_Video();
   vr.set_3d(player->get_camera());
   render_skybox(player -> get_camera());
   for (auto cloud : clouds) cloud->render();
@@ -332,11 +317,10 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
     }
   }
   
-  //collision between mosnter and player 
+  /** Logic for collision between mosnter and player **/
   for (auto monster : monsters)
   {
-	  if(monster -> get_body().intersects(player->get_body()))
-	  {
+	  if (monster -> get_body().intersects(player->get_body())) {
 		  player -> set_position(player -> get_camera().position + player->get_camera().get_forward() * -100);
 		  player -> take_damage(monster -> get_damage());
 	  }
@@ -352,6 +336,7 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
     return false;
   }
   
+  /** Logic for concavity of each tile **/
   if (topology[y][x] <= topology[y+1][x] &&
       topology[y][x] <= topology[y-1][x] &&
       topology[y][x] <= topology[y][x+1] &&
@@ -365,20 +350,28 @@ bool check_concavity(const vector< vector<int> > &topology, int y, int x) {
 
 void Game_State::load_map(const std::string &file_) {
   ifstream file(file_);
-  
   int start_x, start_y, item_count;
+  
+  /** Check if file exists, and get dimensions of map **/
   if (!file.is_open()) throw new bad_exception;
   if (!(file >> dimension.height)) throw new bad_exception;
   if (!(file >> dimension.width)) throw new bad_exception;
+  
+  /** Receive starting location of Explorer **/
   if (!(file >> start_y)) throw new bad_exception;
   if (start_y < 0 || start_y >= dimension.height) throw new bad_exception;
   if (!(file >> start_x)) throw new bad_exception;
   if (start_x < 0 || start_x >= dimension.width) throw new bad_exception;
+  
+  /** Receive Item Count from text file **/
   if (!(file >> item_count)) throw new bad_exception;
   
   string line;
   getline(file,line); // waste comment
+  if (line.find('#') != std::string::npos) throw new bad_exception;
   getline(file,line); // waste a newline
+  
+  /** Read items on the map **/
   for (int i = 0; i < item_count; ++i) {
     char item_char;
     if (!(file >> item_char)) throw new bad_exception;
@@ -496,7 +489,7 @@ void Game_State::load_map(const std::string &file_) {
 	clouds.push_back(new Cloud(Point3f(rand() % 5000, rand() % 5000, 0.0f), rand() % NUM_CLOUD_TYPES));
 
   
-  //spawn 5 of these bad guys
+  /** spawn 5 ghosts **/
   for(int k = 0; k < 5; k++)
 	monsters.push_back(spawn_monster(player -> get_camera().position));
   
