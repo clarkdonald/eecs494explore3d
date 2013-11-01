@@ -39,5 +39,5 @@ bool Item::for_ghost() const {
 void Item::create_body() {
   body = Capsule(get_corner(),
                  get_corner() + Vector3f(get_scale().x,get_scale().y,0.0f),
-                 get_scale().z);
+                 get_scale().z * 2);
 }
