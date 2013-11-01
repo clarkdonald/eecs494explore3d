@@ -240,7 +240,7 @@ void Game_State::perform_logic() {
 	  }
 	  else it++;
   }
-  
+
   /** Logic for shooting arrows **/
   if (!shooting_timer.is_running()) {
     if (controls.shooting_arrow) arrows.push_back(player->fire());
