@@ -39,8 +39,10 @@ void Crosshair::render(const bool &is_wielding_weapon, int player_health, int mo
     k++;
   }
 
-  string score = "Score: ";
-  score += monsters_killed;
+  std::string score_ = "Score: ";
+  score_ += std::to_string(monsters_killed);
+  String score = "";
+  score = score_;
   Zeni::Font &fr = get_Fonts()["system_36_x600"];
   fr.render_text(score, Point2f(0.0f, 0.0f), get_Colors()["title_text"], ZENI_LEFT);
 }
