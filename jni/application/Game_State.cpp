@@ -129,7 +129,8 @@ void Game_State::perform_logic() {
 
   if (spawn_timer >= 3.0f) {
 	  spawn_timer = 0;
-	  monsters.push_back(spawn_monster(player -> get_camera().position));
+	  if(level_type_e == GAME)
+		monsters.push_back(spawn_monster(player -> get_camera().position));
   }
   
   /** Move the clouds, delete them after a while so that new ones get formed **/
@@ -487,8 +488,9 @@ void Game_State::load_map(const std::string &file_) {
 
   
   /** spawn 5 ghosts **/
-  for(int k = 0; k < 5; k++)
-	monsters.push_back(spawn_monster(player -> get_camera().position));
-  
+  //for(int k = 0; k < 5; k++)
+	//monsters.push_back(spawn_monster(player -> get_camera().position));
+
+
   file.close();
 }
