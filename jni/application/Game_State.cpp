@@ -286,7 +286,7 @@ void Game_State::render(){
   
   /** Render 2D stuff **/
   vr.set_2d(VIDEO_DIMENSION, true);
-  crosshair.render(player->is_wielding_weapon(), player->get_health(), monsters_killed);
+  crosshair.render(player->is_wielding_weapon(), player);
   vr.clear_depth_buffer();
 }
 

@@ -11,13 +11,15 @@
 
 #include "Game_Object.h"
 
+class Player;
+
 class Crosshair {
   public:
     Crosshair();
 
     ~Crosshair();
   
-    void render(const bool &is_wielding_weapon, int player_health, int monsters_killed);
+    void render(const bool &is_wielding_weapon, Player* player);
   
     const float & get_radius() {return radius;}
   
