@@ -40,6 +40,7 @@ Game_State::Game_State(const std::string &file_)
 : player(nullptr),
   spawn_timer(0.0f),
   done(false),
+  dead(false),
   monsters_killed(0)
 {
   /** Load common room **/
@@ -129,7 +130,7 @@ void Game_State::perform_logic() {
 
   if (spawn_timer >= 3.0f) {
 	  spawn_timer = 0;
-	  if(level_type_e == GAME)
+	  if (level_type_e == GAME)
 		monsters.push_back(spawn_monster(player -> get_camera().position));
   }
   
@@ -247,7 +248,7 @@ void Game_State::perform_logic() {
 	  bool is_done = false;
     for (auto monster : monsters) {
       if ((*it)->get_body().intersects(monster->get_body())) {
-        monster -> take_damage(1);
+        monster->take_damage(1);
         is_done = true;
       }
     }
@@ -260,6 +261,19 @@ void Game_State::perform_logic() {
       (*it)->update(time_step);
       it++;
     }
+  }
+  
+  /** Logic for collision between monster and player **/
+  for (auto monster : monsters) {
+	  if (monster->get_body().intersects(player->get_body())) {
+      if (!hit_timer.is_running()) {
+        player->take_damage(monster -> get_damage());
+        hit_timer.reset();
+        hit_timer.start();
+      }
+      else if (hit_timer.seconds() > 0.5f) hit_timer.stop();
+      dead = player->is_dead();
+	  }
   }
 }
 
@@ -306,15 +320,6 @@ void Game_State::partial_step(const float &time_step, const Vector3f &velocity) 
       /** Bookkeeping for jumping controls **/
       if (velocity.k < 0.0f) player->set_on_ground(true);
     }
-  }
-  
-  /** Logic for collision between mosnter and player **/
-  for (auto monster : monsters) {
-	  if (monster->get_body().intersects(player->get_body())) {
-      // TODO: We can't let the monsters move us back into a terrain, big glitch
-		  //player->set_position(player->get_camera().position + player->get_camera().get_forward() * -100);
-		  player->take_damage(monster -> get_damage());
-	  }
   }
 }
 

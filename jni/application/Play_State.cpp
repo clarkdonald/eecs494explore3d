@@ -35,8 +35,8 @@ void Play_State::on_pop() {
 void Play_State::on_key(const SDL_KeyboardEvent &event) {
   if (event.keysym.sym == SDLK_p && event.type == SDL_KEYDOWN && game_state != nullptr) {
       string file = game_state->is_common() ?
-      Map_Manager::get_Instance().get_common_room() :
-      Map_Manager::get_Instance().get_previous();
+        Map_Manager::get_Instance().get_common_room() :
+        Map_Manager::get_Instance().get_previous();
       delete game_state;
     game_state = new Game_State(file);
   }
@@ -64,6 +64,10 @@ void Play_State::perform_logic() {
     else {
       game_state = new Game_State(Map_Manager::get_Instance().get_next());
     }
+  }
+  else if (game_state->is_dead()) {
+    delete game_state;
+    game_state = new Game_State(Map_Manager::get_Instance().get_previous());
   }
   if (!over) game_state->perform_logic();
 }
