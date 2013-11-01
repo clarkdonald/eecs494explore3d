@@ -63,10 +63,10 @@ bool Crate::is_portable() const {
 
 void Crate::create_big_body()
 {
-	big_body = Parallelepiped(get_corner(),
-						get_rotation() * get_scale().get_i() * 1.2,
-                        get_rotation() * get_scale().get_j() * 1.2,
-                        get_rotation() * get_scale().get_k() * 1.2);
+	big_body = Parallelepiped(get_corner() - Point3f(10.0f, 10.0f, 10.0f),
+						get_rotation() * get_scale().get_i() * 1.5,
+                        get_rotation() * get_scale().get_j() * 1.5,
+                        get_rotation() * get_scale().get_k() * 1.5);
 }
 
 Model * Crate::model = 0;
